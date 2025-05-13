@@ -1,315 +1,466 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SARJANA – Portal Berita</title>
-  <meta name="description" content="SARJANA – Portal Berita dinamis dengan tampilan premium dan responsif." />
-  <link rel="canonical" href="https://sarjana.web.id" />
-  <meta property="og:title" content="SARJANA – Portal Berita" />
-  <meta property="og:description" content="SARJANA – Portal Berita dinamis dengan tampilan premium dan responsif." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://sarjana.web.id" />
-  <meta property="og:image" content="https://via.placeholder.com/1200x630" />
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+  <meta name="description" content="SARJANA – Portal Berita dinamis dengan tampilan premium dan responsif.">
+  <link rel="canonical" href="https://sarjana.web.id">
+  <meta property="og:title" content="SARJANA – Portal Berita">
+  <meta property="og:description" content="SARJANA – Portal Berita dinamis dengan tampilan premium dan responsif.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://sarjana.web.id">
+  <meta property="og:image" content="https://via.placeholder.com/1200x630">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #0d324d;
-      --secondary: #7f5a83;
-      --accent: #ffc857;
-      --light: #f9f9f9;
-      --dark: #222;
-      --border: #ddd;
-      --shadow: rgba(0,0,0,0.1);
+      --primary-start: #0d324d;
+      --primary-end:   #7f5a83;
+      --accent:       #ffc857;
+      --dark:         #222;
+      --light:        #fafafa;
+      --border:       #e0e0e0;
+      --hover:        #5a3e85;
+      --shadow:       rgba(0,0,0,0.1);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family:'Open Sans',sans-serif; background:var(--light); color:var(--dark); line-height:1.6; }
-    a { color:inherit; text-decoration:none; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body {
+      font-family:'Open Sans',sans-serif;
+      background:var(--light);
+      color:var(--dark);
+      line-height:1.6;
+    }
+    /* Header */
     header {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      padding:1rem 2rem; display:flex; justify-content:space-between; align-items:center; color:white;
-      box-shadow:0 2px 4px var(--shadow);
+      background:linear-gradient(135deg,var(--primary-start),var(--primary-end));
+      color:#fff; padding:15px 20px;
+      display:flex;align-items:center;justify-content:space-between;
+      box-shadow:0 2px 4px var(--shadow);position:relative;z-index:1000;
     }
-    .logo { font-size:1.5rem; font-weight:700; }
-    .hamburger { display:none; flex-direction:column; cursor:pointer; }
-    .hamburger span { height:3px; width:25px; background:white; margin:4px 0; }
-    nav { background:white; border-bottom:1px solid var(--border); overflow:hidden; transition:max-height .3s ease; }
+    .logo a {
+      color:#fff; text-decoration:none;
+      font-size:1.5rem; font-weight:700;
+    }
+    .social-top img {
+      width:24px;height:24px;margin-left:12px;
+    }
+    /* Hamburger */
+    .hamburger {
+      display:none; flex-direction:column; cursor:pointer;
+    }
+    .hamburger span {
+      height:3px; width:25px; background:#fff; margin:4px 0; transition:0.3s;
+    }
+    /* Navigation */
+    nav {
+      background:#fff; border-bottom:1px solid var(--border);
+      overflow:hidden; transition:max-height .3s ease-in-out;
+    }
     nav.closed { max-height:0; }
-    nav.open { max-height:400px; }
+    nav.open   { max-height:600px; }
     nav ul {
-      list-style:none; display:flex; justify-content:center; gap:1rem;
-      padding:1rem; flex-wrap:wrap;
+      list-style:none; display:flex; gap:20px;
+      justify-content:center; padding:10px 0;
     }
     nav li { position:relative; }
     nav a {
-      font-weight:600; padding:.5rem 1rem; border-radius:4px;
-      display:block;
+      text-decoration:none; color:var(--dark);
+      font-weight:600; padding:8px; border-radius:4px; display:block;
     }
     nav a:hover, nav a.active {
-      background:var(--accent); color:var(--primary);
+      background:var(--accent); color:var(--primary-end);
     }
     .submenu {
       display:none; position:absolute; top:100%; left:0;
-      background:white; border:1px solid var(--border);
+      background:#fff; border:1px solid var(--border);
       border-radius:5px; box-shadow:0 2px 6px var(--shadow);
+      min-width:160px; z-index:1000;
     }
-    .menu-item:hover .submenu, .menu-item.open .submenu { display:block; }
-    .submenu a { padding:.5rem 1rem; white-space:nowrap; }
-
+    li.open > .submenu { display:block; }
+    .submenu a { padding:10px 12px; }
+    /* Slider */
     .slider {
-      max-width:1200px; margin:2rem auto; overflow:hidden;
+      max-width:1200px; margin:25px auto; overflow:hidden;
       border-radius:8px; box-shadow:0 4px 8px var(--shadow);
     }
     .slides { display:flex; transition:transform .5s ease; }
     .slide { min-width:100%; position:relative; }
-    .slide img { width:100%; display:block; }
-    .caption {
-      position:absolute; bottom:10%; left:5%;
-      background:rgba(0,0,0,0.6); color:white; padding:1rem; border-radius:4px;
+    .slide img { width:100%; }
+    .slide .caption {
+      position:absolute; bottom:15%; left:5%; padding:10px 14px;
+      background:rgba(0,0,0,0.6); color:#fff; border-radius:4px;
+      font-size:1.2rem; max-width:90%;
     }
-
+    /* Featured */
     .featured {
-      max-width:1200px; margin:2rem auto; display:flex; gap:2rem; padding:0 1rem;
+      display:flex; flex-wrap:wrap; max-width:1200px;
+      margin:30px auto; gap:20px; padding:0 20px;
     }
     .featured img {
-      flex:2; width:100%; border-radius:8px; box-shadow:0 2px 6px var(--shadow);
+      flex:2; width:100%; border-radius:8px;
+      box-shadow:0 2px 6px var(--shadow);
     }
-    .featured h2 { flex:1; align-self:center; font-size:2rem; }
-
+    .featured h2 {
+      flex:1; align-self:center;
+      font-size:1.6rem; padding:10px; color:var(--dark);
+    }
+    /* Main & Grid */
     .main {
-      max-width:1200px; margin:2rem auto; display:flex; gap:2rem;
-      padding:0 1rem; flex-wrap:wrap;
+      display:flex; flex-wrap:wrap; max-width:1200px;
+      margin:30px auto; gap:24px; padding:0 20px;
     }
-    .content { flex:3; min-width:300px; }
+    .content { flex:3; min-width:320px; }
     .grid {
       display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-      gap:1rem;
+      gap:20px;
     }
     .card {
-      background:white; border:1px solid var(--border);
-      border-radius:8px; overflow:hidden; box-shadow:0 2px 6px var(--shadow);
+      background:#fff; border:1px solid var(--border);
+      border-radius:8px; overflow:hidden;
+      box-shadow:0 2px 6px var(--shadow);
+      transition:transform .3s;
     }
+    .card:hover { transform:translateY(-6px); }
     .card img { width:100%; }
-    .info { padding:1rem; }
-    .info h2 { font-size:1.1rem; margin:0 0 .5rem; }
-    .info p { font-size:.9rem; color:#666; }
-
-    aside { flex:1; min-width:200px; }
+    .card .info { padding:14px; }
+    .card h2 { font-size:1.1rem; margin-bottom:8px; }
+    .card p  { font-size:.9rem; color:#666; margin-bottom:10px; }
+    .card a  { color:var(--accent); font-weight:600; }
+    .card a:hover { color:var(--primary-end); }
+    /* Ad slot */
+    .ad-slot {
+      background:var(--light); border:2px dashed var(--accent);
+      color:var(--accent); text-align:center; padding:30px;
+      margin:24px 0; border-radius:8px;
+    }
+    /* Sidebar */
+    aside { flex:1; min-width:240px; }
     .widget {
-      background:white; border:1px solid var(--border);
-      border-radius:8px; margin-bottom:1rem;
+      background:#fff; border:1px solid var(--border);
+      border-radius:8px; margin-bottom:24px;
       box-shadow:0 2px 6px var(--shadow);
     }
     .widget h3 {
-      background:var(--primary); color:white; padding:.5rem 1rem;
-      border-radius:8px 8px 0 0;
+      background:linear-gradient(135deg,var(--primary-start),var(--primary-end));
+      color:#fff; padding:12px; font-size:1.1rem;
     }
-    .widget ul { list-style:none; padding:1rem; }
-    .widget li { margin-bottom:.5rem; }
-
-    .detail {
-      display:none; max-width:800px; margin:2rem auto;
-      background:white; border:1px solid var(--border);
-      border-radius:8px; padding:2rem;
+    .widget ul { list-style:none; padding:12px; }
+    .widget li {
+      opacity:0; transform:translateX(-15px);
+      animation:fadeIn .5s forwards;
+    }
+    .widget li:nth-child(1){animation-delay:.2s;}
+    .widget li:nth-child(2){animation-delay:.3s;}
+    .widget li:nth-child(3){animation-delay:.4s;}
+    .widget li:nth-child(4){animation-delay:.5s;}
+    .widget a { font-size:.9rem; color:var(--dark); }
+    .widget a:hover { color:var(--accent); }
+    /* Detail */
+    #detail {
+      display:none; max-width:800px; margin:30px auto;
+      background:#fff; border:1px solid var(--border);
+      border-radius:8px; padding:24px;
       box-shadow:0 2px 6px var(--shadow);
     }
-    .detail button { margin-bottom:1rem; }
-
-    footer {
-      text-align:center; padding:1rem; background:var(--light);
-      border-top:1px solid var(--border);
+    #detail button {
+      background:var(--accent); color:var(--primary-end);
+      border:none; padding:8px 14px; border-radius:4px;
+      cursor:pointer; margin-bottom:20px;
     }
-
+    #detail button:hover { background:var(--hover); color:#fff; }
+    #detail h2     { font-size:1.5rem; margin-bottom:12px; }
+    #detail .meta  { font-size:.9rem; color:#777; margin-bottom:16px; }
+    #detail img    { width:100%; border-radius:6px; margin-bottom:16px; }
+    #detail .body  { line-height:1.7; color:#444; margin-bottom:18px; }
+    #detail .share { display:flex; gap:12px; font-size:1.4rem; margin-bottom:20px; }
+    #detail .share a { color:var(--dark); transition:color .2s; }
+    #detail .share a:hover { color:var(--accent); }
+    /* Footer */
+    footer {
+      text-align:center; padding:16px; background:var(--light);
+      border-top:1px solid var(--border); font-size:.85rem; color:#555;
+      margin-top:40px;
+    }
+    @keyframes fadeIn {
+      to { opacity:1; transform:translateX(0); }
+    }
     @media(max-width:768px) {
       .hamburger { display:flex; }
-      nav ul { flex-direction:column; align-items:flex-start; }
-      nav a { width:100%; }
-      .submenu a { padding-left:2rem; background:#f9f9f9; }
+      nav { position:absolute; top:65px; left:0; width:100%; }
+      nav ul { flex-direction:column; width:100%; }
+      nav li { width:100%; }
+      nav a { padding:12px 20px; border-bottom:1px solid #f1f1f1; }
+      li.open > .submenu { display:block; }
+      .submenu a { padding-left:40px; background:#f9f9f9; }
+      .main    { flex-direction:column; }
+      .featured{ flex-direction:column; }
     }
   </style>
 </head>
 <body>
+
+  <!-- HEADER -->
   <header>
     <div class="logo"><a href="/">SARJANA</a></div>
+    <div class="social-top">
+      <a href="#"><img src="https://via.placeholder.com/24?text=F" alt="Facebook"></a>
+      <a href="#"><img src="https://via.placeholder.com/24?text=T" alt="Twitter"></a>
+      <a href="#"><img src="https://via.placeholder.com/24?text=I" alt="Instagram"></a>
+    </div>
     <div class="hamburger" onclick="toggleNav()">
       <span></span><span></span><span></span>
     </div>
   </header>
+
+  <!-- NAVIGATION -->
   <nav id="navbar" class="closed"></nav>
 
+  <!-- SLIDER -->
   <div class="slider"><div class="slides" id="slides"></div></div>
 
+  <!-- FEATURED POST -->
   <div class="featured">
+    <img id="feat-img" src="" alt="Featured">
     <h2 id="feat-title"></h2>
-    <img id="feat-img" src="" alt="Featured Post">
   </div>
 
+  <!-- MAIN CONTENT + SIDEBAR -->
   <div class="main">
     <div class="content">
+      <div class="ad-slot">[ AD SLOT ]</div>
       <div class="grid" id="grid"></div>
+      <div class="ad-slot">[ AD SLOT ]</div>
     </div>
     <aside>
       <div class="widget"><h3>Trending</h3><ul id="trending"></ul></div>
-      <div class="widget"><h3>Popular</h3><ul id="popular"></ul></div>
+      <div class="widget"><h3>Terpopuler</h3><ul id="popular"></ul></div>
+      <div class="widget"><h3>Follow Kami</h3>
+        <ul>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">YouTube</a></li>
+        </ul>
+      </div>
+      <div class="widget"><h3>Iklan</h3><div class="ad-slot">[ ADSENSE ]</div></div>
     </aside>
   </div>
 
-  <div class="detail" id="detail">
+  <!-- DETAIL PAGE -->
+  <div id="detail">
     <button onclick="goHome()">← Kembali</button>
     <h2 id="d-title"></h2>
-    <p id="d-meta"></p>
-    <img id="d-img" src="" alt="Detail Image">
-    <div id="d-body"></div>
+    <p class="meta" id="d-meta"></p>
+    <img id="d-img" src="" alt="">
+    <div class="share">
+      <a href="#" title="Share FB">👍</a>
+      <a href="#" title="Share TW">🐦</a>
+      <a href="#" title="Share WA">💬</a>
+      <a href="#" title="Share LI">🔗</a>
+    </div>
+    <p class="body" id="d-body"></p>
   </div>
 
+  <!-- FOOTER -->
   <footer>
     powered by <a href="https://opensite.web.id" target="_blank">opensite.web.id</a>
   </footer>
 
   <script>
-    const sheetURL = 'https://opensheet.vercel.app/1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww/berita';
+    // Data source
+    const URL = 'https://opensheet.vercel.app/1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww/berita';
     let articles = [];
 
+    // Define menu structure
     const MENU = [
       { title: 'Home', path: '/' },
-      { title: 'Berita', path: '/berita', submenu: ['Nasional','Internasional','Teknologi','Olahraga'] },
+      { title: 'Berita', path: '/berita', submenu: [
+        { title: 'Nasional', path: '/Nasional' },
+        { title: 'Internasional', path: '/Internasional' },
+        { title: 'Teknologi', path: '/Teknologi' },
+        { title: 'Olahraga', path: '/Olahraga' },
+      ] },
       { title: 'Ekonomi', path: '/Ekonomi' },
       { title: 'Hiburan', path: '/Hiburan' },
-      { title: 'Lifestyle', path: '/Lifestyle' }
+      { title: 'Lifestyle', path: '/Lifestyle' },
     ];
 
+    // Build nav HTML
     function buildNav() {
-      const nav = document.getElementById('navbar'), ul = document.createElement('ul');
+      const nav = document.getElementById('navbar');
+      const ul = document.createElement('ul');
       MENU.forEach(item => {
         const li = document.createElement('li');
+        li.className = item.submenu ? 'menu-item' : '';
+        addActiveClass(li, item.path);
+
+        const a = document.createElement('a');
+        a.href = item.path;
+        a.textContent = item.title;
+        a.onclick = navClick;
+        li.appendChild(a);
+
         if (item.submenu) {
-          li.className = 'menu-item';
-          const a = document.createElement('a');
-          a.href = item.path; a.textContent = item.title + ' ▼';
-          a.onclick = e => { e.preventDefault(); li.classList.toggle('open'); route(item.path); };
-          li.appendChild(a);
-          const sub = document.createElement('ul'); sub.className = 'submenu';
-          item.submenu.forEach(label => {
+          const sub = document.createElement('ul');
+          sub.className = 'submenu';
+          item.submenu.forEach(s => {
             const sli = document.createElement('li');
             const sa = document.createElement('a');
-            sa.href = '/' + label; sa.textContent = label;
-            sa.onclick = e => { e.preventDefault(); route('/' + label); };
-            sli.appendChild(sa); sub.appendChild(sli);
+            sa.href = s.path;
+            sa.textContent = s.title;
+            sa.onclick = navClick;
+            sli.appendChild(sa);
+            sub.appendChild(sli);
           });
           li.appendChild(sub);
-        } else {
-          const a = document.createElement('a');
-          a.href = item.path; a.textContent = item.title;
-          a.onclick = e => { e.preventDefault(); route(item.path); };
-          li.appendChild(a);
         }
         ul.appendChild(li);
       });
       nav.appendChild(ul);
     }
 
-    function toggleNav() {
-      document.getElementById('navbar').classList.toggle('open');
+    function addActiveClass(li, path) {
+      if (location.pathname === path) li.querySelector('a').classList.add('active');
     }
 
-    document.addEventListener('click', e => {
-      const nav = document.getElementById('navbar'), ham = document.querySelector('.hamburger');
+    function navClick(e) {
+      e.preventDefault();
+      const url = new URL(e.currentTarget.href);
+      history.pushState({}, '', url.pathname);
+      handleRouting();
+      if (window.innerWidth <= 768) toggleNav(false);
+    }
+
+    // Close mobile nav when click outside
+    document.addEventListener('click', (e) => {
+      const nav = document.getElementById('navbar');
+      const ham = document.querySelector('.hamburger');
       if (!nav.contains(e.target) && !ham.contains(e.target)) {
-        nav.classList.remove('open');
-        document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('open'));
+        toggleNav(false);
       }
     });
 
-    function route(path) {
-      history.pushState({}, '', path);
-      handleRoute();
+    function toggleNav(force) {
+      const nav = document.getElementById('navbar');
+      if (force === false) nav.classList.remove('open');
+      else nav.classList.toggle('open');
     }
-    window.onpopstate = handleRoute;
 
-    fetch(sheetURL)
-      .then(r=>r.json())
-      .then(data=> {
-        articles = data;
-        buildNav();
-        renderSlider();
-        renderFeatured();
-        renderWidgets();
-        handleRoute();
+    // Fetch & initialize
+    fetch(URL).then(r=>r.json()).then(json=>{
+      articles = json;
+      buildNav();
+      init();
+    });
+
+    function init(){
+      renderSlider();
+      renderFeatured();
+      renderWidgets();
+      handleRouting();
+    }
+
+    // Routing based on pathname
+    function handleRouting(){
+      const path = decodeURIComponent(location.pathname);
+      if (path === '/' || path === '/berita') return renderGrid();
+      // check submenu labels
+      const menuItem = MENU.find(m => m.path === path);
+      if (menuItem && !menuItem.submenu) return renderGrid(menuItem.title);
+      if (menuItem && menuItem.submenu) return renderGrid(); 
+      // check if submenu label
+      for (const m of MENU.filter(m=>m.submenu).flatMap(m=>m.submenu)) {
+        if (m.path === path) return renderGrid(m.title);
+      }
+      // else treat as slug
+      const slug = path.slice(1);
+      return showDetail(slug);
+    }
+
+    // Slider
+    function renderSlider(){
+      const s = document.getElementById('slides');
+      s.innerHTML = '';
+      articles.slice(0,5).forEach(a=>{
+        const div = document.createElement('div');
+        div.className='slide';
+        div.innerHTML = `<img src="${a.Gambar}" alt=""><div class="caption">${a.Judul}</div>`;
+        s.appendChild(div);
       });
-
-    function handleRoute() {
-      const p = location.pathname.replace('/', '');
-      if (!p || p==='berita') return renderGrid();
-      const art = articles.find(a => a.Slug===p);
-      if (art) return showDetail(p);
-      return renderGrid(p);
+      let idx=0;
+      setInterval(()=>{
+        idx=(idx+1)%s.children.length;
+        s.style.transform=`translateX(${-idx*100}%)`;
+      },3000);
     }
 
-    function renderSlider() {
-      const s = document.getElementById('slides'); s.innerHTML = '';
-      articles.slice(0,5).forEach(a => {
-        const d = document.createElement('div'); d.className='slide';
-        d.innerHTML = `<img src="${a.Gambar}" alt=""><div class="caption">${a.Judul}</div>`;
-        s.appendChild(d);
-      });
+    // Featured Post
+    function renderFeatured(){
+      const a=articles[0]||{};
+      document.getElementById('feat-img').src = a.Gambar||'';
+      document.getElementById('feat-title').textContent = a.Judul||'';
     }
 
-    function renderFeatured() {
-      const a = articles[0] || {};
-      document.getElementById('feat-img').src = a.Gambar || '';
-      document.getElementById('feat-title').textContent = a.Judul || '';
+    // Grid/List
+    function renderGrid(label){
+      showHomeUI();
+      const g = document.getElementById('grid'); g.innerHTML='';
+      articles
+        .filter(a => !label || a.Label === label)
+        .forEach(a => {
+          const c=document.createElement('div'); c.className='card';
+          c.innerHTML = `<img src="${a.Gambar}" alt="">
+            <div class="info">
+              <h2><a href="/${a.Slug}">${a.Judul}</a></h2>
+              <p>${a.Tanggal}</p>
+            </div>`;
+          c.querySelector('a').onclick = e => { e.preventDefault(); navClick(e); showDetail(a.Slug); };
+          g.appendChild(c);
+        });
     }
 
-    function renderGrid(label) {
-      hideDetail();
-      const g = document.getElementById('grid'); g.innerHTML = '';
-      articles.filter(a => !label || a.Label===label).forEach(a => {
-        const c = document.createElement('div'); c.className='card';
-        c.innerHTML = `<img src="${a.Gambar}" alt=""><div class="info">
-          <h2><a href="/${a.Slug}" onclick="event.preventDefault();route('/${a.Slug}')">${a.Judul}</a></h2>
-          <p>${a.Tanggal}</p></div>`;
-        g.appendChild(c);
-      });
+    // Widgets
+    function renderWidgets(){
+      const t=document.getElementById('trending'),
+            p=document.getElementById('popular');
+      t.innerHTML=p.innerHTML='';
+      articles.slice(0,5).forEach(a => makeLI(t,a));
+      [...articles].sort((a,b)=>b.View-a.View).slice(0,5).forEach(a=>makeLI(p,a));
+    }
+    function makeLI(parent,a){
+      const li=document.createElement('li');
+      li.innerHTML = `<a href="/${a.Slug}">${a.Judul}</a>`;
+      li.querySelector('a').onclick = e=>{ e.preventDefault(); navClick(e); showDetail(a.Slug); };
+      parent.appendChild(li);
     }
 
-    function showDetail(slug) {
-      const a = articles.find(x=>x.Slug===slug);
-      if (!a) return;
-      document.querySelector('.slider').style.display='none';
-      document.querySelector('.featured').style.display='none';
-      document.querySelector('.main').style.display='none';
-      const d = document.getElementById('detail'); d.style.display='block';
+    // Detail
+    function showDetail(slug){
+      const a = articles.find(x=>x.Slug === slug);
+      if(!a) return renderGrid();
       document.getElementById('d-title').textContent = a.Judul;
       document.getElementById('d-meta').textContent = `${a.Tanggal} | ${a.Label}`;
       document.getElementById('d-img').src = a.Gambar;
       document.getElementById('d-body').textContent = a.Isi;
+      document.querySelector('.slider').style.display = 'none';
+      document.querySelector('.featured').style.display = 'none';
+      document.querySelector('.main').style.display = 'none';
+      document.getElementById('detail').style.display = 'block';
     }
 
-    function hideDetail() {
-      document.getElementById('detail').style.display='none';
-      document.querySelector('.slider').style.display='block';
-      document.querySelector('.featured').style.display='flex';
-      document.querySelector('.main').style.display='flex';
+    function goHome(){
+      history.pushState({},'', '/');
+      renderGrid();
     }
 
-    function goHome() {
-      route('/');
+    function showHomeUI(){
+      document.querySelector('.slider').style.display = 'block';
+      document.querySelector('.featured').style.display = 'flex';
+      document.querySelector('.main').style.display = 'flex';
+      document.getElementById('detail').style.display = 'none';
     }
 
-    function renderWidgets() {
-      const t = document.getElementById('trending'), p = document.getElementById('popular');
-      t.innerHTML = p.innerHTML = '';
-      articles.slice(0,5).forEach(a => {
-        const li = document.createElement('li');
-        li.innerHTML = `<a href="/${a.Slug}" onclick="event.preventDefault();route('/${a.Slug}')">${a.Judul}</a>`;
-        t.appendChild(li);
-      });
-      [...articles].sort((a,b)=>b.View-a.View).slice(0,5).forEach(a => {
-        const li = document.createElement('li');
-        li.innerHTML = `<a href="/${a.Slug}" onclick="event.preventDefault();route('/${a.Slug}')">${a.Judul}</a>`;
-        p.appendChild(li);
-      });
-    }
+    window.onpopstate = handleRouting;
   </script>
 </body>
 </html>
