@@ -141,10 +141,6 @@
       terbaru.innerHTML = '';
 
       semuaBerita.forEach((b, i) => {
-        // Populer by View
-        const liPop = document.createElement('li');
-        liPop.innerHTML = `<a href="?slug=${b.Slug}">${b.Judul}</a>`;
-        populer.appendChild(liPop);
         // Terbaru (first 5)
         if (i < 5) {
           const liTer = document.createElement('li');
@@ -165,15 +161,12 @@
       });
 
       // Urutkan populer
-      dokument.getElementById('populer').innerHTML = '';
-      semuaBerita
-        .sort((a,b)=>b.View - a.View)
-        .slice(0,5)
-        .forEach(b=>{
-          const li = document.createElement('li');
-          li.innerHTML = `<a href="?slug=${b.Slug}">${b.Judul}</a>`;
-          document.getElementById('populer').appendChild(li);
-        });
+      const sorted = [...semuaBerita].sort((a,b)=>b.View - a.View).slice(0,5);
+      sorted.forEach(b=>{
+        const li = document.createElement('li');
+        li.innerHTML = `<a href="?slug=${b.Slug}">${b.Judul}</a>`;
+        document.getElementById('populer').appendChild(li);
+      });
     }
 
     function cekSlug() {
@@ -184,7 +177,7 @@
     function tampilkanDetail(slug) {
       const b = semuaBerita.find(x=>x.Slug===slug);
       if (!b) return;
-      document.getElementById('detail-page').style.display = 'flex';
+      document.getElementById('detail-page').<style.display = 'flex';
       document.querySelector('.slider').style.display = 'none';
       document.getElementById('berita-list').innerHTML='';
       document.getElementById('detail-img').src = b.Gambar;
