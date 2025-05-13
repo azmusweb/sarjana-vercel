@@ -1,398 +1,263 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+  <!-- Basic SEO -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Detik Pro Igniel Premium</title>
-  <meta name="description" content="YOUR_SITE_DESCRIPTION">
-  <link rel="canonical" href="https://opensite.web.id">
-  <meta property="og:title" content="Detik Pro Igniel Premium">
-  <meta property="og:description" content="YOUR_SITE_DESCRIPTION">
+  <title>SARJANA – Portal Berita</title>
+  <meta name="description" content="SARJANA – Portal Berita dinamis dengan tampilan premium dan responsif.">
+  <link rel="canonical" href="https://sarjana.web.id">
+  <!-- Open Graph -->
+  <meta property="og:title" content="SARJANA – Portal Berita">
+  <meta property="og:description" content="SARJANA – Portal Berita dinamis dengan tampilan premium dan responsif.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://opensite.web.id">
+  <meta property="og:url" content="https://sarjana.web.id">
   <meta property="og:image" content="https://via.placeholder.com/1200x630">
+  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary-start: #0d324d;
       --primary-end:   #7f5a83;
       --accent:       #ffc857;
-      --dark:         #333;
-      --light:        #fbfbfb;
+      --dark:         #222;
+      --light:        #fafafa;
       --border:       #e0e0e0;
       --hover:        #5a3e85;
       --shadow:       rgba(0,0,0,0.1);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin:0; padding:0; }
     body {
       font-family: 'Open Sans', sans-serif;
       background: var(--light);
       color: var(--dark);
+      line-height: 1.6;
     }
     /* Header */
     header {
       background: linear-gradient(135deg, var(--primary-start), var(--primary-end));
       color: #fff;
       padding: 15px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
       box-shadow: 0 2px 4px var(--shadow);
+      position: relative; z-index: 1000;
     }
-    header img { height: 45px; }
-    .social-top img { width: 24px; height: 24px; margin-left: 8px; }
-
+    .logo { font-size: 1.5rem; font-weight: 700; }
+    .social-top img { width:24px; height:24px; margin-left:12px; }
     /* Hamburger */
     .hamburger {
-      display: none;
-      cursor: pointer;
-      font-size: 1.8rem;
-      color: #fff;
+      display: none; flex-direction: column; cursor: pointer;
     }
-
+    .hamburger span {
+      height: 3px; width:25px; background:#fff; margin:4px 0; transition:0.3s;
+    }
     /* Navigation */
     nav {
-      background: #fff;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 8px 0;
-      transition: transform .3s;
+      background: #fff; border-bottom:1px solid var(--border);
+      transition: max-height .3s ease-in-out;
+      overflow: hidden;
     }
-    nav.closed { transform: translateY(-100%); }
-    nav .menu {
-      position: relative;
-      margin: 0 20px;
+    nav.closed { max-height: 0; }
+    nav.open   { max-height: 500px; }
+    nav ul {
+      list-style:none; display:flex; gap:20px;
+      justify-content: center; padding:10px 0;
     }
-    nav .menu > a {
-      color: var(--dark);
-      text-decoration: none;
-      font-weight: 600;
-      padding: 8px;
-      border-radius: 4px;
+    nav li { position: relative; }
+    nav a {
+      text-decoration:none; color: var(--dark);
+      font-weight:600; padding:8px; border-radius:4px; display:block;
     }
-    nav .menu > a:hover,
-    nav .menu > a.active {
-      background: var(--accent);
-      color: var(--primary-end);
+    nav a:hover, nav a.active {
+      background: var(--accent); color: var(--primary-end);
     }
-    nav .submenu {
-      display: none;
-      position: absolute;
-      top: 100%; left: 0;
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      box-shadow: 0 2px 6px var(--shadow);
-      min-width: 160px;
-      z-index: 10;
+    .submenu {
+      display:none; position:absolute; top:100%; left:0;
+      background:#fff; border:1px solid var(--border);
+      border-radius:5px; box-shadow:0 2px 6px var(--shadow);
+      min-width:160px; z-index:1000;
     }
-    nav .submenu a {
-      display: block;
-      padding: 10px 12px;
-      color: var(--dark);
-      text-decoration: none;
-    }
-    nav .submenu a:hover {
-      background: var(--light);
-    }
-    nav .menu.open .submenu {
-      display: block;
-    }
+    li.open > .submenu { display:block; }
+    .submenu a { padding:10px 12px; }
 
     /* Slider */
     .slider {
-      position: relative;
-      max-width: 1200px;
-      margin: 25px auto;
-      overflow: hidden;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px var(--shadow);
+      max-width:1200px; margin:25px auto; overflow:hidden;
+      border-radius:8px; box-shadow:0 4px 8px var(--shadow);
     }
-    .slides {
-      display: flex;
-      transition: transform .5s ease;
-    }
-    .slide {
-      min-width: 100%;
-      position: relative;
-    }
-    .slide img {
-      width: 100%;
-      display: block;
-    }
+    .slides { display:flex; transition:transform .5s ease; }
+    .slide { min-width:100%; position:relative; }
+    .slide img { width:100%; }
     .slide .caption {
-      position: absolute;
-      bottom: 15%; left: 5%;
-      background: rgba(0,0,0,0.6);
-      color: #fff;
-      padding: 10px 14px;
-      border-radius: 4px;
-      font-size: 1.2rem;
-      max-width: 90%;
+      position:absolute; bottom:15%; left:5%; padding:10px 14px;
+      background:rgba(0,0,0,0.6); color:#fff; border-radius:4px;
+      font-size:1.2rem; max-width:90%;
     }
 
-    /* Featured Post */
+    /* Featured */
     .featured {
-      max-width: 1200px;
-      margin: 30px auto;
-      padding: 0 12px;
-      display: flex;
-      gap: 20px;
+      display:flex; flex-wrap:wrap; max-width:1200px;
+      margin:30px auto; gap:20px; padding:0 20px;
     }
     .featured img {
-      flex: 2;
-      width: 100%;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px var(--shadow);
+      flex:2; width:100%; border-radius:8px;
+      box-shadow:0 2px 6px var(--shadow);
     }
     .featured h2 {
-      flex: 1;
-      font-size: 1.6rem;
-      color: var(--dark);
-      align-self: center;
-      padding: 0 12px;
+      flex:1; align-self:center; font-size:1.6rem;
+      padding:10px; color:var(--dark);
     }
 
     /* Main & Grid */
     .main {
-      display: flex;
-      flex-wrap: wrap;
-      max-width: 1200px;
-      margin: 30px auto;
-      gap: 24px;
-      padding: 0 12px;
+      display:flex; flex-wrap:wrap; max-width:1200px;
+      margin:30px auto; gap:24px; padding:0 20px;
     }
-    .content {
-      flex: 3;
-      min-width: 320px;
-    }
+    .content { flex:3; min-width:320px; }
     .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+      gap:20px;
     }
     .card {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 6px var(--shadow);
-      transition: transform .3s;
+      background:#fff; border:1px solid var(--border);
+      border-radius:8px; overflow:hidden;
+      box-shadow:0 2px 6px var(--shadow);
+      transition:transform .3s;
     }
-    .card:hover {
-      transform: translateY(-6px);
-    }
-    .card img { width: 100%; height: auto; }
-    .card .info { padding: 14px; }
-    .card h2 {
-      font-size: 1.1rem;
-      color: var(--dark);
-      margin-bottom: 8px;
-    }
-    .card p {
-      font-size: .9rem;
-      color: #666;
-      margin-bottom: 10px;
-    }
-    .card a {
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .card a:hover {
-      color: var(--primary-end);
-    }
+    .card:hover { transform:translateY(-6px); }
+    .card img { width:100%; }
+    .card .info { padding:14px; }
+    .card h2 { font-size:1.1rem; margin-bottom:8px; }
+    .card p  { font-size:.9rem; color:#666; margin-bottom:10px; }
+    .card a  { color:var(--accent); font-weight:600; }
+    .card a:hover { color:var(--primary-end); }
 
     /* Ad slot */
     .ad-slot {
-      background: var(--light);
-      border: 2px dashed var(--accent);
-      color: var(--accent);
-      text-align: center;
-      padding: 30px;
-      margin: 24px 0;
-      border-radius: 8px;
+      background:var(--light); border:2px dashed var(--accent);
+      color:var(--accent); text-align:center; padding:30px;
+      margin:24px 0; border-radius:8px;
     }
 
     /* Sidebar Widgets */
-    aside {
-      flex: 1;
-      min-width: 240px;
-    }
+    aside { flex:1; min-width:240px; }
     .widget {
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      margin-bottom: 24px;
-      overflow: hidden;
-      box-shadow: 0 2px 6px var(--shadow);
+      background:#fff; border:1px solid var(--border);
+      border-radius:8px; margin-bottom:24px;
+      box-shadow:0 2px 6px var(--shadow);
     }
     .widget h3 {
-      background: linear-gradient(135deg, var(--primary-start), var(--primary-end));
-      color: #fff;
-      padding: 12px;
-      font-size: 1.1rem;
+      background:linear-gradient(135deg,var(--primary-start),var(--primary-end));
+      color:#fff; padding:12px; font-size:1.1rem;
     }
-    .widget ul {
-      list-style: none;
-      padding: 12px;
-    }
+    .widget ul { list-style:none; padding:12px; }
     .widget li {
-      margin-bottom: 10px;
-      opacity: 0;
-      transform: translateX(-15px);
-      animation: fadeIn .5s forwards;
+      opacity:0; transform:translateX(-15px);
+      animation:fadeIn .5s forwards;
     }
-    .widget li:nth-child(1) { animation-delay: .2s; }
-    .widget li:nth-child(2) { animation-delay: .3s; }
-    .widget li:nth-child(3) { animation-delay: .4s; }
-    .widget li:nth-child(4) { animation-delay: .5s; }
-    .widget a {
-      color: var(--dark);
-      text-decoration: none;
-      font-size: .9rem;
-    }
-    .widget a:hover {
-      color: var(--accent);
-    }
+    .widget li:nth-child(1){animation-delay:.2s;}
+    .widget li:nth-child(2){animation-delay:.3s;}
+    .widget li:nth-child(3){animation-delay:.4s;}
+    .widget li:nth-child(4){animation-delay:.5s;}
+    .widget a { font-size:.9rem; color:var(--dark); text-decoration:none; }
+    .widget a:hover { color:var(--accent); }
 
     /* Detail Page */
     #detail {
-      display: none;
-      max-width: 800px;
-      margin: 30px auto;
-      background: #fff;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 24px;
-      box-shadow: 0 2px 6px var(--shadow);
+      display:none; max-width:800px; margin:30px auto;
+      background:#fff; border:1px solid var(--border);
+      border-radius:8px; padding:24px;
+      box-shadow:0 2px 6px var(--shadow);
     }
     #detail button {
-      background: var(--accent);
-      color: var(--primary-end);
-      border: none;
-      padding: 8px 14px;
-      font-size: .9rem;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-bottom: 20px;
+      background:var(--accent); color:var(--primary-end);
+      border:none; padding:8px 14px; border-radius:4px;
+      cursor:pointer; margin-bottom:20px;
     }
     #detail button:hover {
-      background: var(--hover);
-      color: #fff;
+      background:var(--hover); color:#fff;
     }
-    #detail h2 {
-      font-size: 1.5rem;
-      color: var(--dark);
-      margin-bottom: 12px;
-    }
-    #detail .meta {
-      font-size: .9rem;
-      color: #777;
-      margin-bottom: 16px;
-    }
-    #detail img {
-      width: 100%;
-      border-radius: 6px;
-      margin-bottom: 16px;
-    }
-    #detail .body {
-      line-height: 1.7;
-      color: #444;
-      margin-bottom: 18px;
-    }
+    #detail h2 { font-size:1.5rem; margin-bottom:12px; }
+    #detail .meta { font-size:.9rem; color:#777; margin-bottom:16px; }
+    #detail img   { width:100%; border-radius:6px; margin-bottom:16px; }
+    #detail .body { line-height:1.7; color:#444; margin-bottom:18px; }
     #detail .share {
-      display: flex;
-      gap: 12px;
-      font-size: 1.4rem;
-      margin-bottom: 20px;
+      display:flex; gap:12px; font-size:1.4rem; margin-bottom:20px;
     }
     #detail .share a {
-      color: var(--dark);
-      transition: color .2s;
+      color:var(--dark); transition:color .2s;
     }
-    #detail .share a:hover {
-      color: var(--accent);
-    }
+    #detail .share a:hover { color:var(--accent); }
 
     /* Footer */
     footer {
-      text-align: center;
-      padding: 16px;
-      background: var(--light);
-      border-top: 1px solid var(--border);
-      font-size: .85rem;
-      color: #555;
-      margin-top: 40px;
+      text-align:center; padding:16px; background:var(--light);
+      border-top:1px solid var(--border); font-size:.85rem; color:#555;
+      margin-top:40px;
     }
 
-    /* Animations & Media */
     @keyframes fadeIn {
-      to { opacity: 1; transform: translateX(0); }
+      to { opacity:1; transform:translateX(0); }
     }
-    @media (max-width: 768px) {
-      .hamburger { display: block; }
+    @media(max-width:768px) {
+      .hamburger { display:flex; }
       nav {
-        position: absolute;
-        top: 65px; left: 0;
-        width: 100%;
-        transform: translateY(-100%);
+        position:absolute; top:65px; left:0; width:100%;
       }
-      nav.open { transform: translateY(0); }
-      nav .menu {
-        width: 100%;
-        text-align: center;
-        margin: 10px 0;
-      }
-      nav .submenu {
-        position: static;
-        border: none;
-        box-shadow: none;
-      }
-      .main { flex-direction: column; } 
-      .featured { flex-direction: column; }
+      nav ul { flex-direction:column; width:100%; }
+      nav li { width:100%; }
+      nav a { padding:12px 20px; border-bottom:1px solid #f1f1f1; }
+      li.open > .submenu { display:block; }
+      .submenu a { padding-left:40px; background:#f9f9f9; }
+      .main { flex-direction:column; }
+      .featured { flex-direction:column; }
     }
   </style>
 </head>
 <body>
 
+  <!-- Header & Social -->
   <header>
-    <img src="https://via.placeholder.com/160x40?text=LOGO" alt="Logo">
+    <div class="logo"><a href="/" style="color:#fff;text-decoration:none;">SARJANA</a></div>
     <div class="social-top">
-      <a href="#"><img src="https://via.placeholder.com/24?text=F" alt="FB"></a>
-      <a href="#"><img src="https://via.placeholder.com/24?text=T" alt="TW"></a>
-      <a href="#"><img src="https://via.placeholder.com/24?text=I" alt="IG"></a>
+      <a href="#"><img src="https://via.placeholder.com/24?text=F" alt="Facebook"></a>
+      <a href="#"><img src="https://via.placeholder.com/24?text=T" alt="Twitter"></a>
+      <a href="#"><img src="https://via.placeholder.com/24?text=I" alt="Instagram"></a>
     </div>
-    <div class="hamburger" onclick="toggleNav()">☰</div>
+    <div class="hamburger" onclick="toggleNav()">
+      <span></span><span></span><span></span>
+    </div>
   </header>
 
-  <nav id="navMenu" class="closed">
-    <div class="menu"><a href="#" onclick="goHome()">Home</a></div>
-    <div class="menu" onclick="this.classList.toggle('open')">
-      <a href="javascript:;">Berita ▼</a>
-      <div class="submenu">
-        <a href="#" onclick="filterCat('Nasional')">Nasional</a>
-        <a href="#" onclick="filterCat('Internasional')">Internasional</a>
-        <a href="#" onclick="filterCat('Teknologi')">Teknologi</a>
-        <a href="#" onclick="filterCat('Hiburan')">Hiburan</a>
-        <a href="#" onclick="filterCat('Olahraga')">Olahraga</a>
-      </div>
-    </div>
-    <div class="menu"><a href="#" onclick="filterCat('Ekonomi')">Ekonomi</a></div>
-    <div class="menu"><a href="#" onclick="filterCat('Olahraga')">Olahraga</a></div>
-    <div class="menu"><a href="#" onclick="filterCat('Hiburan')">Hiburan</a></div>
-    <div class="menu"><a href="#" onclick="filterCat('Lifestyle')">Lifestyle</a></div>
+  <!-- Navigation -->
+  <nav id="navbar" class="closed">
+    <ul>
+      <li><a href="/" onclick="goHome()">Home</a></li>
+      <li class="menu-item" onclick="toggleSubmenu(event)">
+        <a href="javascript:;">Berita ▼</a>
+        <ul class="submenu">
+          <li><a href="?label=Nasional">Nasional</a></li>
+          <li><a href="?label=Internasional">Internasional</a></li>
+          <li><a href="?label=Teknologi">Teknologi</a></li>
+          <li><a href="?label=Olahraga">Olahraga</a></li>
+        </ul>
+      </li>
+      <li><a href="?label=Ekonomi">Ekonomi</a></li>
+      <li><a href="?label=Hiburan">Hiburan</a></li>
+      <li><a href="?label=Lifestyle">Lifestyle</a></li>
+    </ul>
   </nav>
 
+  <!-- Slider -->
   <div class="slider"><div class="slides" id="slides"></div></div>
 
+  <!-- Featured Post -->
   <div class="featured">
-    <img id="feat-img" src="https://via.placeholder.com/1200x600" alt="">
-    <h2 id="feat-title">Featured Article Title</h2>
+    <img id="feat-img" src="" alt="Featured">
+    <h2 id="feat-title"></h2>
   </div>
 
+  <!-- Main Content & Sidebar -->
   <div class="main">
     <div class="content">
       <div class="ad-slot">[ AD SLOT ]</div>
@@ -402,16 +267,19 @@
     <aside>
       <div class="widget"><h3>Trending</h3><ul id="trending"></ul></div>
       <div class="widget"><h3>Terpopuler</h3><ul id="popular"></ul></div>
-      <div class="widget"><h3>Follow Kami</h3><ul>
-        <li><a href="#">Facebook</a></li>
-        <li><a href="#">Twitter</a></li>
-        <li><a href="#">Instagram</a></li>
-        <li><a href="#">YouTube</a></li>
-      </ul></div>
+      <div class="widget"><h3>Follow Kami</h3>
+        <ul>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">YouTube</a></li>
+        </ul>
+      </div>
       <div class="widget"><h3>Iklan</h3><div class="ad-slot">[ ADSENSE ]</div></div>
     </aside>
   </div>
 
+  <!-- Detail Page -->
   <div id="detail">
     <button onclick="goHome()">← Kembali</button>
     <h2 id="d-title"></h2>
@@ -426,24 +294,27 @@
     <p class="body" id="d-body"></p>
   </div>
 
+  <!-- Footer -->
   <footer>
-    powered by opensite.web.id
+    powered by <a href="https://opensite.web.id" target="_blank">opensite.web.id</a>
   </footer>
 
+  <!-- JavaScript -->
   <script>
-    // Ambil data dari Google Spreadsheet via OpenSheet
     const URL = 'https://opensheet.vercel.app/1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww/berita';
-    let articles = [];
+    let articles=[];
 
     fetch(URL)
-      .then(res => res.json())
-      .then(json => {
-        articles = json;
-        init();
-      });
+      .then(res=>res.json())
+      .then(json=>{ articles=json; init(); });
 
     function toggleNav() {
-      document.getElementById('navMenu').classList.toggle('open');
+      document.getElementById('navbar').classList.toggle('open');
+    }
+    function toggleSubmenu(e) {
+      if (window.innerWidth <= 768) {
+        e.currentTarget.classList.toggle('open');
+      }
     }
 
     function init(){
@@ -451,97 +322,96 @@
       renderFeatured();
       renderGrid();
       renderWidgets();
-      checkSlug();
+      handleRouting();
     }
 
     function renderSlider(){
-      const s = document.getElementById('slides');
-      articles.slice(0,5).forEach(a => {
-        const div = document.createElement('div');
-        div.className = 'slide';
-        div.innerHTML = `<img src="${a.Gambar}" alt=""><div class="caption">${a.Judul}</div>`;
+      const s=document.getElementById('slides');
+      articles.slice(0,5).forEach(a=>{
+        const div=document.createElement('div');
+        div.className='slide';
+        div.innerHTML=`<img src="${a.Gambar}" alt=""><div class="caption">${a.Judul}</div>`;
         s.appendChild(div);
       });
-      let idx = 0;
+      let idx=0;
       setInterval(()=>{
-        idx = (idx + 1) % s.children.length;
-        s.style.transform = `translateX(${-idx*100}%)`;
-      }, 3000);
+        idx=(idx+1)%s.children.length;
+        s.style.transform=`translateX(${-idx*100}%)`;
+      },3000);
     }
 
     function renderFeatured(){
-      const a = articles[0] || {};
-      document.getElementById('feat-img').src = a.Gambar || '';
-      document.getElementById('feat-title').textContent = a.Judul || '';
+      const a=articles[0]||{};
+      document.getElementById('feat-img').src=a.Gambar||'';
+      document.getElementById('feat-title').textContent=a.Judul||'';
     }
 
-    function renderGrid(cat){
-      goHomeUI();
-      const g = document.getElementById('grid'); g.innerHTML = '';
+    function renderGrid(label){
+      showHomeUI();
+      const g=document.getElementById('grid');
+      g.innerHTML='';
       articles
-        .filter(a => !cat || a.Label === cat)
-        .forEach(a => {
-          const c = document.createElement('div');
-          c.className = 'card';
-          c.innerHTML = `
-            <img src="${a.Gambar}" alt="">
-            <div class="info">
-              <h2><a href="?slug=${a.Slug}">${a.Judul}</a></h2>
-              <p>${a.Tanggal}</p>
-            </div>`;
-          c.querySelector('a').onclick = e => { e.preventDefault(); showDetail(a.Slug); };
+        .filter(a=>!label || a.Label===label)
+        .forEach(a=>{
+          const c=document.createElement('div'); c.className='card';
+          c.innerHTML=`<img src="${a.Gambar}" alt=""><div class="info">
+            <h2><a href="?slug=${a.Slug}">${a.Judul}</a></h2><p>${a.Tanggal}</p>
+          </div>`;
+          c.querySelector('a').onclick=e=>{e.preventDefault(); showDetail(a.Slug);};
           g.appendChild(c);
         });
     }
 
     function renderWidgets(){
-      const t = document.getElementById('trending'),
-            p = document.getElementById('popular');
-      t.innerHTML = p.innerHTML = '';
-      articles.slice(0,5).forEach(a => makeLI(t,a));
-      [...articles].sort((a,b)=>b.View - a.View).slice(0,5).forEach(a => makeLI(p,a));
+      const t=document.getElementById('trending'), p=document.getElementById('popular');
+      t.innerHTML=p.innerHTML='';
+      articles.slice(0,5).forEach(a=>makeLI(t,a));
+      [...articles].sort((a,b)=>b.View-a.View).slice(0,5).forEach(a=>makeLI(p,a));
     }
-
     function makeLI(parent,a){
-      const li = document.createElement('li');
-      li.innerHTML = `<a href="?slug=${a.Slug}">${a.Judul}</a>`;
-      li.querySelector('a').onclick = e => { e.preventDefault(); showDetail(a.Slug); };
+      const li=document.createElement('li');
+      li.innerHTML=`<a href="?slug=${a.Slug}">${a.Judul}</a>`;
+      li.querySelector('a').onclick=e=>{e.preventDefault(); showDetail(a.Slug);};
       parent.appendChild(li);
     }
 
-    function checkSlug(){
-      const s = new URLSearchParams(location.search).get('slug');
-      if(s) showDetail(s);
-    }
-
-    function showDetail(slug){
-      const a = articles.find(x => x.Slug === slug);
-      if(!a) return goHome();
-      document.getElementById('d-title').textContent = a.Judul;
-      document.getElementById('d-meta').textContent = `${a.Tanggal} | ${a.Label}`;
-      document.getElementById('d-img').src = a.Gambar;
-      document.getElementById('d-body').textContent = a.Isi;
-      document.querySelector('.main').style.display = 'none';
-      document.querySelector('.slider').style.display = 'none';
-      document.querySelector('.featured').style.display = 'none';
-      document.getElementById('detail').style.display = 'block';
-    }
-
-    function goHome(){
-      history.replaceState({},'',location.pathname);
+    function handleRouting(){
+      const params=new URLSearchParams(location.search);
+      if(params.has('slug')) return showDetail(params.get('slug'));
+      if(params.has('label')) return renderGrid(params.get('label'));
       renderGrid();
     }
 
-    function goHomeUI(){
-      document.querySelector('.main').style.display = 'flex';
-      document.querySelector('.slider').style.display = 'block';
-      document.querySelector('.featured').style.display = 'flex';
-      document.getElementById('detail').style.display = 'none';
+    function showDetail(slug){
+      const a=articles.find(x=>x.Slug===slug);
+      if(!a) return renderGrid();
+      document.getElementById('d-title').textContent=a.Judul;
+      document.getElementById('d-meta').textContent=`${a.Tanggal} | ${a.Label}`;
+      document.getElementById('d-img').src=a.Gambar;
+      document.getElementById('d-body').textContent=a.Isi;
+      document.querySelector('.slider').style.display='none';
+      document.querySelector('.featured').style.display='none';
+      document.querySelector('.main').style.display='none';
+      document.getElementById('detail').style.display='block';
     }
 
-    function filterCat(c){
-      renderGrid(c);
+    function goHome(){
+      history.replaceState({},'', '/');
+      renderGrid();
+    }
+
+    function showHomeUI(){
+      document.querySelector('.slider').style.display='block';
+      document.querySelector('.featured').style.display='flex';
+      document.querySelector('.main').style.display='flex';
+      document.getElementById('detail').style.display='none';
+    }
+
+    function filterCat(label){
+      history.replaceState({},'', '?label='+encodeURIComponent(label));
+      renderGrid(label);
     }
   </script>
+
 </body>
 </html>
