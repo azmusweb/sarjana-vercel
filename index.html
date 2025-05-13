@@ -2,89 +2,189 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Detik Pro Igniel</title>
+  <title>Detik Pro Igniel Premium</title>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{--primary:#0078c1;--dark:#333;--light:#f9f9f9;--border:#ddd;--hover:#005a9c;}
-    *{box-sizing:border-box;margin:0;padding:0;}
-    body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--dark);}
-    header{background:var(--primary);color:#fff;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;}
-    header img{height:40px;}
-    .hamburger{display:none;cursor:pointer;font-size:1.5rem;}
-    nav{background:#fff;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;justify-content:center;padding:5px 0;transition:transform .3s;}
+    :root {
+      --primary-start: #0d324d;
+      --primary-end:   #7f5a83;
+      --accent:       #ffc857;
+      --dark:         #333;
+      --light:        #fbfbfb;
+      --border:       #e0e0e0;
+      --hover:        #5a3e85;
+      --shadow:       rgba(0,0,0,0.1);
+    }
+    * {box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Open Sans',sans-serif;
+         background:var(--light);
+         color:var(--dark);}
+    header {
+      background: linear-gradient(135deg, var(--primary-start), var(--primary-end));
+      color:#fff; padding:15px 20px;
+      display:flex; align-items:center; justify-content:space-between;
+      box-shadow:0 2px 4px var(--shadow);
+    }
+    header img{height:45px;}
+    .hamburger {
+      display:none; cursor:pointer; font-size:1.8rem;
+      color:#fff;
+    }
+    nav {
+      background:#fff;
+      border-bottom:1px solid var(--border);
+      display:flex; flex-wrap:wrap; justify-content:center;
+      padding:8px 0; transition:transform .3s;
+    }
     nav.closed{transform:translateY(-100%);}
-    nav .menu{position:relative;list-style:none;margin:0 15px;}
-    nav .menu>a{color:var(--dark);text-decoration:none;font-weight:600;padding:8px;}
-    nav .menu:hover>a{color:var(--primary);}
-    nav .submenu{display:none;position:absolute;top:100%;left:0;background:#fff;border:1px solid var(--border);z-index:10;transition:opacity .3s;}
-    nav .submenu a{display:block;padding:8px 12px;color:var(--dark);text-decoration:none;white-space:nowrap;}
-    nav .submenu a:hover{background:var(--border);}
-    nav .menu:hover .submenu{display:block;opacity:1;}
+    nav .menu {
+      position:relative; list-style:none; margin:0 20px;
+    }
+    nav .menu>a {
+      color:var(--dark); text-decoration:none; font-weight:600;
+      padding:8px; border-radius:4px;
+    }
+    nav .menu>a:hover,
+    nav .menu>a.active {
+      background:var(--accent); color:var(--primary-end);
+    }
+    nav .submenu {
+      display:none; position:absolute; top:100%; left:0;
+      background:#fff; border:1px solid var(--border); border-radius:4px;
+      box-shadow:0 2px 6px var(--shadow); min-width:160px; z-index:10;
+    }
+    nav .submenu a {
+      display:block; padding:10px 12px; color:var(--dark);
+      text-decoration:none; transition:background .2s;
+    }
+    nav .submenu a:hover {background:var(--light);}
+    /* Make submenu stay open if parent has .open */
+    nav .menu.open .submenu {display:block;}
 
-    .slider{position:relative;max-width:1200px;margin:20px auto;overflow:hidden;}
-    .slides{display:flex;transition:transform .5s ease;}
-    .slide{min-width:100%;position:relative;}
-    .slide img{width:100%;display:block;}
-    .slide .caption{position:absolute;bottom:10%;left:5%;background:rgba(0,0,0,.6);color:#fff;padding:8px 12px;font-size:1.2rem;border-radius:4px;}
+    .slider {
+      position:relative; max-width:1200px; margin:25px auto;
+      overflow:hidden; border-radius:8px; box-shadow:0 4px 8px var(--shadow);
+    }
+    .slides {display:flex;transition:transform .5s ease;}
+    .slide {min-width:100%; position:relative;}
+    .slide img {width:100%;display:block;}
+    .slide .caption {
+      position:absolute; bottom:15%; left:5%;
+      background:rgba(0,0,0,0.6); color:#fff;
+      padding:10px 14px; border-radius:4px;
+      font-size:1.2rem; max-width:90%;
+    }
 
-    .featured{max-width:1200px;margin:20px auto;padding:0 10px;}
-    .featured img{width:100%;height:auto;border-radius:4px;}
-    .featured h2{margin:10px 0;font-size:1.5rem;color:var(--dark);}
+    .featured {
+      max-width:1200px; margin:30px auto; padding:0 12px;
+      display:flex; gap:20px;
+    }
+    .featured img {
+      flex:2; width:100%; border-radius:8px;
+      box-shadow:0 2px 6px var(--shadow);
+    }
+    .featured h2 {
+      flex:1; font-size:1.6rem; color:var(--dark);
+      align-self:center; padding:0 12px;
+    }
 
-    .main{display:flex;flex-wrap:wrap;max-width:1200px;margin:20px auto;gap:20px;padding:0 10px;}
-    .content{flex:3;min-width:300px;}
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:15px;}
-    .card{background:#fff;border:1px solid var(--border);border-radius:4px;overflow:hidden;position:relative;transition:transform .3s;}
-    .card:hover{transform:translateY(-4px);}
-    .card img{width:100%;}
-    .card .info{padding:10px;}
-    .card h2{font-size:1rem;margin-bottom:6px;color:var(--dark);}
-    .card p{font-size:.85rem;color:#555;margin-bottom:8px;}
-    .card a{color:var(--primary);text-decoration:none;font-size:.9rem;font-weight:600;}
-    .card a:hover{color:var(--hover);}
+    .main {
+      display:flex; flex-wrap:wrap; max-width:1200px;
+      margin:30px auto; gap:24px; padding:0 12px;
+    }
+    .content {flex:3; min-width:320px;}
+    .grid {display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;}
+    .card {
+      background:#fff; border:1px solid var(--border);
+      border-radius:8px; overflow:hidden;
+      box-shadow:0 2px 6px var(--shadow); transition:transform .3s;
+    }
+    .card:hover {transform:translateY(-6px);}
+    .card img {width:100%;height:auto;}
+    .card .info {padding:14px;}
+    .card h2 {font-size:1.1rem;color:var(--dark);margin-bottom:8px;}
+    .card p {font-size:.9rem;color:#666;margin-bottom:10px;}
+    .card a {
+      color:var(--accent); text-decoration:none; font-weight:600;
+    }
+    .card a:hover {color:var(--primary-end);}
 
-    .ad-slot{background:#eee;border:1px dashed var(--border);text-align:center;padding:20px;margin-bottom:20px;color:#888;}
+    .ad-slot {
+      background:var(--light);
+      border:2px dashed var(--accent);
+      color:var(--accent);
+      text-align:center;padding:30px;
+      margin:24px 0; border-radius:8px;
+    }
 
-    aside{flex:1;min-width:200px;}
-    .widget{background:#fff;border:1px solid var(--border);border-radius:4px;margin-bottom:20px;overflow:hidden;}
-    .widget h3{background:var(--primary);color:#fff;padding:8px;font-size:1rem;}
-    .widget ul{list-style:none;padding:10px;}
-    .widget li{margin-bottom:8px;opacity:0;transform:translateX(-10px);animation:fadeIn .5s forwards;}
+    aside {flex:1; min-width:240px;}
+    .widget {
+      background:#fff; border:1px solid var(--border);
+      border-radius:8px; overflow:hidden; box-shadow:0 2px 6px var(--shadow);
+      margin-bottom:24px;
+    }
+    .widget h3 {
+      background:var(--primary-start);
+      background:linear-gradient(135deg,var(--primary-start),var(--primary-end));
+      color:#fff;padding:12px;font-size:1.1rem;
+    }
+    .widget ul {list-style:none;padding:12px;}
+    .widget li {
+      margin-bottom:10px; opacity:0; transform:translateX(-15px);
+      animation:fadeIn .5s forwards;
+    }
     .widget li:nth-child(1){animation-delay:.2s;}
     .widget li:nth-child(2){animation-delay:.3s;}
     .widget li:nth-child(3){animation-delay:.4s;}
     .widget li:nth-child(4){animation-delay:.5s;}
-    .widget a{color:var(--dark);text-decoration:none;font-size:.9rem;}
-    .widget a:hover{color:var(--primary);}
+    .widget a {color:var(--dark); text-decoration:none; font-size:.9rem;}
+    .widget a:hover {color:var(--accent);}
 
-    #detail{display:none;max-width:800px;margin:20px auto;background:#fff;border:1px solid var(--border);border-radius:4px;padding:20px;}
-    #detail h2{margin-bottom:10px;color:var(--dark);}
-    #detail .meta{font-size:.85rem;color:#777;margin-bottom:15px;}
-    #detail img{width:100%;border-radius:4px;margin-bottom:15px;}
-    #detail .body{line-height:1.6;margin-bottom:15px;}
-    #detail .share{display:flex;gap:10px;margin-bottom:20px;}
-    #detail .share a{color:var(--dark);font-size:1.2rem;transition:color .3s;}
-    #detail .share a:hover{color:var(--primary);}
-    #detail button{background:var(--primary);color:#fff;border:none;padding:8px 12px;cursor:pointer;border-radius:4px;font-size:.9rem;}
-    #detail button:hover{background:var(--hover);}
+    #detail {
+      display:none; max-width:800px; margin:30px auto;
+      background:#fff; border:1px solid var(--border);
+      border-radius:8px; padding:24px; box-shadow:0 2px 6px var(--shadow);
+    }
+    #detail button {
+      background:var(--accent); color:var(--primary-end);
+      border:none; padding:8px 14px; font-size:.9rem;
+      border-radius:4px; cursor:pointer; margin-bottom:20px;
+    }
+    #detail button:hover {background:var(--hover); color:#fff;}
+    #detail h2 {font-size:1.5rem;color:var(--dark);margin-bottom:12px;}
+    #detail .meta {font-size:.9rem;color:#777;margin-bottom:16px;}
+    #detail img {width:100%;border-radius:6px;margin-bottom:16px;}
+    #detail .body {line-height:1.7;color:#444;margin-bottom:18px;}
+    #detail .share {
+      display:flex; gap:12px; font-size:1.4rem; margin-bottom:20px;
+    }
+    #detail .share a {color:var(--dark);transition:color .2s;}
+    #detail .share a:hover {color:var(--accent);}
 
-    footer{text-align:center;padding:15px;background:#eee;font-size:.85rem;color:#555;margin-top:40px;}
+    footer {
+      text-align:center;padding:16px;background:var(--light);
+      border-top:1px solid var(--border);font-size:.85rem;color:#555;
+      margin-top:40px;
+    }
 
-    @keyframes fadeIn{to{opacity:1;transform:translateX(0);}}
+    @keyframes fadeIn {
+      to {opacity:1; transform:translateX(0);}
+    }
     @media(max-width:768px){
       .hamburger{display:block;}
-      nav{position:absolute;top:60px;left:0;width:100%;transform:translateY(-100%);}
+      nav{position:absolute;top:65px;left:0;width:100%;transform:translateY(-100%);}
       nav.open{transform:translateY(0);}
       nav .menu{width:100%;text-align:center;margin:10px 0;}
       nav .submenu{position:static;border:none;}
       .main{flex-direction:column;}
+      .featured{flex-direction:column;}
     }
   </style>
 </head>
 <body>
 
   <header>
-    <img src="https://via.placeholder.com/150x40?text=LOGO" alt="Logo">
+    <img src="https://via.placeholder.com/160x40?text=LOGO" alt="Logo">
     <div class="social-top">
       <a href="#"><img src="https://via.placeholder.com/24?text=F" alt="FB"></a>
       <a href="#"><img src="https://via.placeholder.com/24?text=T" alt="TW"></a>
@@ -150,120 +250,91 @@
     <p class="body" id="d-body"></p>
   </div>
 
-  <footer>&copy; 2025 Detik Pro Clone</footer>
+  <footer>&copy; 2025 Detik Pro Igniel</footer>
 
   <script>
-    // Ambil data dari Google Spreadsheet via OpenSheet
     const URL = 'https://opensheet.vercel.app/1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww/berita';
-    let articles = [];
+    let articles=[];
 
     fetch(URL)
-      .then(res => res.json())
-      .then(json => {
-        articles = json;
-        init();
-      });
+      .then(r=>r.json())
+      .then(j=>{ articles=j; init(); });
 
-    function init(){
+    function toggleNav() {
+      document.getElementById('navMenu').classList.toggle('open');
+    }
+    function init() {
       renderSlider();
       renderFeatured();
       renderGrid();
       renderWidgets();
       checkSlug();
     }
-
-    function toggleNav(){
-      document.getElementById('navMenu').classList.toggle('open');
-    }
-
-    function renderSlider(){
+    function renderSlider() {
       const s = document.getElementById('slides');
-      articles.slice(0,5).forEach(a => {
-        const div = document.createElement('div');
-        div.className = 'slide';
-        div.innerHTML = `<img src="${a.Gambar}" alt=""><div class="caption">${a.Judul}</div>`;
+      articles.slice(0,5).forEach(a=>{
+        const div=document.createElement('div'); div.className='slide';
+        div.innerHTML=`<img src="${a.Gambar}" alt=""><div class="caption">${a.Judul}</div>`;
         s.appendChild(div);
       });
-      let idx = 0;
-      setInterval(()=>{
-        idx = (idx + 1) % s.children.length;
-        s.style.transform = `translateX(${-idx*100}%)`;
-      }, 3000);
+      let idx=0; setInterval(()=>{
+        idx=(idx+1)%s.children.length;
+        s.style.transform=`translateX(${-idx*100}%)`;
+      },3000);
     }
-
-    function renderFeatured(){
-      const a = articles[0] || {};
-      document.getElementById('feat-img').src = a.Gambar || '';
-      document.getElementById('feat-title').textContent = a.Judul || '';
+    function renderFeatured() {
+      const a=articles[0]||{};
+      document.getElementById('feat-img').src=a.Gambar||'';
+      document.getElementById('feat-title').textContent=a.Judul||'';
     }
-
-    function renderGrid(cat){
+    function renderGrid(cat) {
       goHomeUI();
-      const g = document.getElementById('grid');
-      g.innerHTML = '';
-      articles
-        .filter(a => !cat || a.Label === cat)
-        .forEach(a => {
-          const c = document.createElement('div');
-          c.className = 'card';
-          c.innerHTML = `
-            <img src="${a.Gambar}" alt="">
-            <div class="info">
-              <h2><a href="?slug=${a.Slug}">${a.Judul}</a></h2>
-              <p>${a.Tanggal}</p>
-            </div>`;
-          c.querySelector('a').onclick = e => { e.preventDefault(); showDetail(a.Slug); };
-          g.appendChild(c);
-        });
+      const g = document.getElementById('grid'); g.innerHTML='';
+      articles.filter(a=>!cat||a.Label===cat).forEach(a=>{
+        const c=document.createElement('div'); c.className='card';
+        c.innerHTML=`<img src="${a.Gambar}"><div class="info"><h2><a href="?slug=${a.Slug}">${a.Judul}</a></h2><p>${a.Tanggal}</p></div>`;
+        c.querySelector('a').onclick=e=>{e.preventDefault();showDetail(a.Slug);};
+        g.appendChild(c);
+      });
     }
-
-    function renderWidgets(){
-      const t = document.getElementById('trending'), p = document.getElementById('popular');
-      t.innerHTML = p.innerHTML = '';
-      articles.slice(0,5).forEach(a => makeLI(t,a));
-      [...articles].sort((a,b)=>b.View - a.View).slice(0,5).forEach(a => makeLI(p,a));
+    function renderWidgets() {
+      const t=document.getElementById('trending'), p=document.getElementById('popular');
+      t.innerHTML=p.innerHTML='';
+      articles.slice(0,5).forEach(a=>makeLI(t,a));
+      [...articles].sort((a,b)=>b.View-a.View).slice(0,5).forEach(a=>makeLI(p,a));
     }
-
-    function makeLI(parent,a){
-      const li = document.createElement('li');
-      li.innerHTML = `<a href="?slug=${a.Slug}">${a.Judul}</a>`;
-      li.querySelector('a').onclick = e => { e.preventDefault(); showDetail(a.Slug); };
+    function makeLI(parent,a) {
+      const li=document.createElement('li');
+      li.innerHTML=`<a href="?slug=${a.Slug}">${a.Judul}</a>`;
+      li.querySelector('a').onclick=e=>{e.preventDefault();showDetail(a.Slug);};
       parent.appendChild(li);
     }
-
-    function checkSlug(){
-      const s = new URLSearchParams(location.search).get('slug');
+    function checkSlug() {
+      const s=new URLSearchParams(location.search).get('slug');
       if(s) showDetail(s);
     }
-
-    function showDetail(slug){
-      const a = articles.find(x=>x.Slug===slug);
-      if(!a) return goHome();
-      document.getElementById('d-title').textContent = a.Judul;
-      document.getElementById('d-meta').textContent = `${a.Tanggal} | ${a.Label}`;
-      document.getElementById('d-img').src = a.Gambar;
-      document.getElementById('d-body').textContent = a.Isi;
+    function showDetail(slug) {
+      const a=articles.find(x=>x.Slug===slug); if(!a) return goHome();
+      document.getElementById('d-title').textContent=a.Judul;
+      document.getElementById('d-meta').textContent=`${a.Tanggal} | ${a.Label}`;
+      document.getElementById('d-img').src=a.Gambar;
+      document.getElementById('d-body').textContent=a.Isi;
       document.querySelector('.main').style.display='none';
       document.querySelector('.slider').style.display='none';
       document.querySelector('.featured').style.display='none';
       document.getElementById('detail').style.display='block';
     }
-
-    function goHome(){
+    function goHome() {
       history.replaceState({},'',location.pathname);
       renderGrid();
     }
-
     function goHomeUI(){
       document.querySelector('.main').style.display='flex';
       document.querySelector('.slider').style.display='block';
-      document.querySelector('.featured').style.display='block';
+      document.querySelector('.featured').style.display='flex';
       document.getElementById('detail').style.display='none';
     }
-
-    function filterCat(c){
-      renderGrid(c);
-    }
+    function filterCat(c){renderGrid(c);}
   </script>
 
 </body>
