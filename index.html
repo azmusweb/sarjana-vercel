@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Detik Pro Igniel Premium</title>
   <meta name="description" content="YOUR_SITE_DESCRIPTION">
   <link rel="canonical" href="https://opensite.web.id">
@@ -23,36 +23,337 @@
       --hover:        #5a3e85;
       --shadow:       rgba(0,0,0,0.1);
     }
-    *{box-sizing:border-box;margin:0;padding:0;}
-    body{font-family:'Open Sans',sans-serif;background:var(--light);color:var(--dark);}
-    header{background:linear-gradient(135deg,var(--primary-start),var(--primary-end));color:#fff;
-      padding:15px 20px;display:flex;align-items:center;justify-content:space-between;
-      box-shadow:0 2px 4px var(--shadow);}
-    header img{height:45px;}
-    .social-top img{width:24px;height:24px;margin-left:8px;}
-    .hamburger{display:none;cursor:pointer;font-size:1.8rem;color:#fff;}
-    nav{background:#fff;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;
-      justify-content:center;padding:8px 0;transition:transform .3s;}
-    nav.closed{transform:translateY(-100%);}
-    nav .menu{position:relative;list-style:none;margin:0 20px;}
-    nav .menu>a{color:var(--dark);text-decoration:none;font-weight:600;padding:8px;border-radius:4px;}
-    nav .menu>a:hover,nav .menu>a.active{background:var(--accent);color:var(--primary-end);}
-    nav .submenu{display:none;position:absolute;top:100%;left:0;background:#fff;
-      border:1px solid var(--border);border-radius:4px;box-shadow:0 2px 6px var(--shadow);
-      min-width:160px;z-index:10;}
-    nav .submenu a{display:block;padding:10px 12px;color:var(--dark);text-decoration:none;}
-    nav .submenu a:hover{background:var(--light);}
-    nav .menu.open .submenu{display:block;}
-    /* ensure submenu opens on click in mobile */
-    @media(max-width:768px){
-      .hamburger{display:block;}
-      nav{position:absolute;top:65px;left:0;width:100%;transform:translateY(-100%);}
-      nav.open{transform:translateY(0);}
-      nav .menu{width:100%;text-align:center;margin:10px 0;}
-      nav .submenu{position:static;border:none;box-shadow:none;}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: var(--light);
+      color: var(--dark);
+    }
+    /* Header */
+    header {
+      background: linear-gradient(135deg, var(--primary-start), var(--primary-end));
+      color: #fff;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 4px var(--shadow);
+    }
+    header img { height: 45px; }
+    .social-top img { width: 24px; height: 24px; margin-left: 8px; }
+
+    /* Hamburger */
+    .hamburger {
+      display: none;
+      cursor: pointer;
+      font-size: 1.8rem;
+      color: #fff;
     }
 
-    /* ... rest of your existing styles (slider, featured, main, cards, widgets, detail, footer) ... */
+    /* Navigation */
+    nav {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 8px 0;
+      transition: transform .3s;
+    }
+    nav.closed { transform: translateY(-100%); }
+    nav .menu {
+      position: relative;
+      margin: 0 20px;
+    }
+    nav .menu > a {
+      color: var(--dark);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 8px;
+      border-radius: 4px;
+    }
+    nav .menu > a:hover,
+    nav .menu > a.active {
+      background: var(--accent);
+      color: var(--primary-end);
+    }
+    nav .submenu {
+      display: none;
+      position: absolute;
+      top: 100%; left: 0;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      box-shadow: 0 2px 6px var(--shadow);
+      min-width: 160px;
+      z-index: 10;
+    }
+    nav .submenu a {
+      display: block;
+      padding: 10px 12px;
+      color: var(--dark);
+      text-decoration: none;
+    }
+    nav .submenu a:hover {
+      background: var(--light);
+    }
+    nav .menu.open .submenu {
+      display: block;
+    }
+
+    /* Slider */
+    .slider {
+      position: relative;
+      max-width: 1200px;
+      margin: 25px auto;
+      overflow: hidden;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px var(--shadow);
+    }
+    .slides {
+      display: flex;
+      transition: transform .5s ease;
+    }
+    .slide {
+      min-width: 100%;
+      position: relative;
+    }
+    .slide img {
+      width: 100%;
+      display: block;
+    }
+    .slide .caption {
+      position: absolute;
+      bottom: 15%; left: 5%;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 4px;
+      font-size: 1.2rem;
+      max-width: 90%;
+    }
+
+    /* Featured Post */
+    .featured {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 0 12px;
+      display: flex;
+      gap: 20px;
+    }
+    .featured img {
+      flex: 2;
+      width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px var(--shadow);
+    }
+    .featured h2 {
+      flex: 1;
+      font-size: 1.6rem;
+      color: var(--dark);
+      align-self: center;
+      padding: 0 12px;
+    }
+
+    /* Main & Grid */
+    .main {
+      display: flex;
+      flex-wrap: wrap;
+      max-width: 1200px;
+      margin: 30px auto;
+      gap: 24px;
+      padding: 0 12px;
+    }
+    .content {
+      flex: 3;
+      min-width: 320px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px var(--shadow);
+      transition: transform .3s;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+    }
+    .card img { width: 100%; height: auto; }
+    .card .info { padding: 14px; }
+    .card h2 {
+      font-size: 1.1rem;
+      color: var(--dark);
+      margin-bottom: 8px;
+    }
+    .card p {
+      font-size: .9rem;
+      color: #666;
+      margin-bottom: 10px;
+    }
+    .card a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .card a:hover {
+      color: var(--primary-end);
+    }
+
+    /* Ad slot */
+    .ad-slot {
+      background: var(--light);
+      border: 2px dashed var(--accent);
+      color: var(--accent);
+      text-align: center;
+      padding: 30px;
+      margin: 24px 0;
+      border-radius: 8px;
+    }
+
+    /* Sidebar Widgets */
+    aside {
+      flex: 1;
+      min-width: 240px;
+    }
+    .widget {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 24px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px var(--shadow);
+    }
+    .widget h3 {
+      background: linear-gradient(135deg, var(--primary-start), var(--primary-end));
+      color: #fff;
+      padding: 12px;
+      font-size: 1.1rem;
+    }
+    .widget ul {
+      list-style: none;
+      padding: 12px;
+    }
+    .widget li {
+      margin-bottom: 10px;
+      opacity: 0;
+      transform: translateX(-15px);
+      animation: fadeIn .5s forwards;
+    }
+    .widget li:nth-child(1) { animation-delay: .2s; }
+    .widget li:nth-child(2) { animation-delay: .3s; }
+    .widget li:nth-child(3) { animation-delay: .4s; }
+    .widget li:nth-child(4) { animation-delay: .5s; }
+    .widget a {
+      color: var(--dark);
+      text-decoration: none;
+      font-size: .9rem;
+    }
+    .widget a:hover {
+      color: var(--accent);
+    }
+
+    /* Detail Page */
+    #detail {
+      display: none;
+      max-width: 800px;
+      margin: 30px auto;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px;
+      box-shadow: 0 2px 6px var(--shadow);
+    }
+    #detail button {
+      background: var(--accent);
+      color: var(--primary-end);
+      border: none;
+      padding: 8px 14px;
+      font-size: .9rem;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+    #detail button:hover {
+      background: var(--hover);
+      color: #fff;
+    }
+    #detail h2 {
+      font-size: 1.5rem;
+      color: var(--dark);
+      margin-bottom: 12px;
+    }
+    #detail .meta {
+      font-size: .9rem;
+      color: #777;
+      margin-bottom: 16px;
+    }
+    #detail img {
+      width: 100%;
+      border-radius: 6px;
+      margin-bottom: 16px;
+    }
+    #detail .body {
+      line-height: 1.7;
+      color: #444;
+      margin-bottom: 18px;
+    }
+    #detail .share {
+      display: flex;
+      gap: 12px;
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+    }
+    #detail .share a {
+      color: var(--dark);
+      transition: color .2s;
+    }
+    #detail .share a:hover {
+      color: var(--accent);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 16px;
+      background: var(--light);
+      border-top: 1px solid var(--border);
+      font-size: .85rem;
+      color: #555;
+      margin-top: 40px;
+    }
+
+    /* Animations & Media */
+    @keyframes fadeIn {
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @media (max-width: 768px) {
+      .hamburger { display: block; }
+      nav {
+        position: absolute;
+        top: 65px; left: 0;
+        width: 100%;
+        transform: translateY(-100%);
+      }
+      nav.open { transform: translateY(0); }
+      nav .menu {
+        width: 100%;
+        text-align: center;
+        margin: 10px 0;
+      }
+      nav .submenu {
+        position: static;
+        border: none;
+        box-shadow: none;
+      }
+      .main { flex-direction: column; } 
+      .featured { flex-direction: column; }
+    }
   </style>
 </head>
 <body>
@@ -85,21 +386,162 @@
     <div class="menu"><a href="#" onclick="filterCat('Lifestyle')">Lifestyle</a></div>
   </nav>
 
-  <!-- slider, featured, main, detail (unchanged) -->
+  <div class="slider"><div class="slides" id="slides"></div></div>
+
+  <div class="featured">
+    <img id="feat-img" src="https://via.placeholder.com/1200x600" alt="">
+    <h2 id="feat-title">Featured Article Title</h2>
+  </div>
+
+  <div class="main">
+    <div class="content">
+      <div class="ad-slot">[ AD SLOT ]</div>
+      <div class="grid" id="grid"></div>
+      <div class="ad-slot">[ AD SLOT ]</div>
+    </div>
+    <aside>
+      <div class="widget"><h3>Trending</h3><ul id="trending"></ul></div>
+      <div class="widget"><h3>Terpopuler</h3><ul id="popular"></ul></div>
+      <div class="widget"><h3>Follow Kami</h3><ul>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#">Twitter</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">YouTube</a></li>
+      </ul></div>
+      <div class="widget"><h3>Iklan</h3><div class="ad-slot">[ ADSENSE ]</div></div>
+    </aside>
+  </div>
+
+  <div id="detail">
+    <button onclick="goHome()">← Kembali</button>
+    <h2 id="d-title"></h2>
+    <p class="meta" id="d-meta"></p>
+    <img id="d-img" src="" alt="">
+    <div class="share">
+      <a href="#" title="Share Facebook">👍</a>
+      <a href="#" title="Share Twitter">🐦</a>
+      <a href="#" title="Share WhatsApp">💬</a>
+      <a href="#" title="Share LinkedIn">🔗</a>
+    </div>
+    <p class="body" id="d-body"></p>
+  </div>
 
   <footer>
     powered by opensite.web.id
   </footer>
 
   <script>
+    // Ambil data dari Google Spreadsheet via OpenSheet
     const URL = 'https://opensheet.vercel.app/1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww/berita';
     let articles = [];
-    fetch(URL).then(r=>r.json()).then(j=>{ articles=j; init(); });
 
-    function toggleNav(){
+    fetch(URL)
+      .then(res => res.json())
+      .then(json => {
+        articles = json;
+        init();
+      });
+
+    function toggleNav() {
       document.getElementById('navMenu').classList.toggle('open');
     }
-    /* rest of your JavaScript (init, renderSlider, renderGrid, renderWidgets, showDetail, etc.) */
+
+    function init(){
+      renderSlider();
+      renderFeatured();
+      renderGrid();
+      renderWidgets();
+      checkSlug();
+    }
+
+    function renderSlider(){
+      const s = document.getElementById('slides');
+      articles.slice(0,5).forEach(a => {
+        const div = document.createElement('div');
+        div.className = 'slide';
+        div.innerHTML = `<img src="${a.Gambar}" alt=""><div class="caption">${a.Judul}</div>`;
+        s.appendChild(div);
+      });
+      let idx = 0;
+      setInterval(()=>{
+        idx = (idx + 1) % s.children.length;
+        s.style.transform = `translateX(${-idx*100}%)`;
+      }, 3000);
+    }
+
+    function renderFeatured(){
+      const a = articles[0] || {};
+      document.getElementById('feat-img').src = a.Gambar || '';
+      document.getElementById('feat-title').textContent = a.Judul || '';
+    }
+
+    function renderGrid(cat){
+      goHomeUI();
+      const g = document.getElementById('grid'); g.innerHTML = '';
+      articles
+        .filter(a => !cat || a.Label === cat)
+        .forEach(a => {
+          const c = document.createElement('div');
+          c.className = 'card';
+          c.innerHTML = `
+            <img src="${a.Gambar}" alt="">
+            <div class="info">
+              <h2><a href="?slug=${a.Slug}">${a.Judul}</a></h2>
+              <p>${a.Tanggal}</p>
+            </div>`;
+          c.querySelector('a').onclick = e => { e.preventDefault(); showDetail(a.Slug); };
+          g.appendChild(c);
+        });
+    }
+
+    function renderWidgets(){
+      const t = document.getElementById('trending'),
+            p = document.getElementById('popular');
+      t.innerHTML = p.innerHTML = '';
+      articles.slice(0,5).forEach(a => makeLI(t,a));
+      [...articles].sort((a,b)=>b.View - a.View).slice(0,5).forEach(a => makeLI(p,a));
+    }
+
+    function makeLI(parent,a){
+      const li = document.createElement('li');
+      li.innerHTML = `<a href="?slug=${a.Slug}">${a.Judul}</a>`;
+      li.querySelector('a').onclick = e => { e.preventDefault(); showDetail(a.Slug); };
+      parent.appendChild(li);
+    }
+
+    function checkSlug(){
+      const s = new URLSearchParams(location.search).get('slug');
+      if(s) showDetail(s);
+    }
+
+    function showDetail(slug){
+      const a = articles.find(x => x.Slug === slug);
+      if(!a) return goHome();
+      document.getElementById('d-title').textContent = a.Judul;
+      document.getElementById('d-meta').textContent = `${a.Tanggal} | ${a.Label}`;
+      document.getElementById('d-img').src = a.Gambar;
+      document.getElementById('d-body').textContent = a.Isi;
+      document.querySelector('.main').style.display = 'none';
+      document.querySelector('.slider').style.display = 'none';
+      document.querySelector('.featured').style.display = 'none';
+      document.getElementById('detail').style.display = 'block';
+    }
+
+    function goHome(){
+      history.replaceState({},'',location.pathname);
+      renderGrid();
+    }
+
+    function goHomeUI(){
+      document.querySelector('.main').style.display = 'flex';
+      document.querySelector('.slider').style.display = 'block';
+      document.querySelector('.featured').style.display = 'flex';
+      document.getElementById('detail').style.display = 'none';
+    }
+
+    function filterCat(c){
+      renderGrid(c);
+    }
   </script>
 </body>
 </html>
