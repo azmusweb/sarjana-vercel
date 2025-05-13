@@ -1,89 +1,91 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tetora Lite 2.0</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Detik Lite</title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #f67938;
-      --bg: #ffffff;
-      --text: #333333;
-      --hover: #f46013;
-      --border: #efefef;
+      --primary: #0078c1;
+      --dark: #333;
+      --light: #f9f9f9;
+      --border: #ddd;
+      --hover: #005a9c;
     }
     * { box-sizing: border-box; margin:0; padding:0; }
-    body { font-family: sans-serif; background: var(--bg); color: var(--text); }
-    header { background: var(--primary); color:#fff; padding:15px; text-align:center; }
-    header h1 { margin:0; font-size:1.8rem; }
-    nav { background:#fff; border-bottom:1px solid var(--border); display:flex; justify-content:center; flex-wrap:wrap; }
-    nav .item { position:relative; list-style:none; margin:0 1rem; }
-    nav .item > a { display:block; padding:10px; color:var(--text); text-decoration:none; font-weight:bold; }
-    nav .item:hover > a { color:var(--primary); }
-    nav .submenu { display:none; position:absolute; top:100%; left:0; background:#fff; border:1px solid var(--border); }
-    nav .submenu a { display:block; padding:8px 12px; color:var(--text); text-decoration:none; white-space:nowrap; }
-    nav .submenu a:hover { background:var(--border); }
-    nav .item:hover .submenu { display:block; }
+    body { font-family:'Open Sans',sans-serif; background:var(--light); color:var(--dark); }
+    header { background:var(--primary); color:#fff; padding:10px 20px; }
+    header h1 { font-size:1.6rem; }
+    nav { background:#fff; border-bottom:1px solid var(--border); display:flex; flex-wrap:wrap; justify-content:center; padding:5px 0; }
+    nav a { margin:0 15px; color:var(--dark); text-decoration:none; font-weight:600; }
+    nav a:hover { color:var(--primary); }
 
-    .slider { overflow:hidden; margin:20px auto; max-width:1200px; position:relative; }
+    /* Slider */
+    .slider { position:relative; max-width:1200px; margin:20px auto; overflow:hidden; }
     .slides { display:flex; transition:transform .5s ease; }
     .slide { min-width:100%; position:relative; }
     .slide img { width:100%; display:block; }
-    .slide .cap { position:absolute; bottom:20px; left:20px; background:rgba(0,0,0,.5); color:#fff; padding:8px; border-radius:4px; }
+    .slide .caption { position:absolute; bottom:10%; left:5%; background:rgba(0,0,0,0.6); color:#fff; padding:8px 12px; font-size:1.2rem; border-radius:4px; }
 
-    .container { display:flex; flex-wrap:wrap; max-width:1200px; margin:20px auto; gap:20px; padding:0 10px; }
-    main { flex:3; min-width:300px; }
-    article { background:#fff; border:1px solid var(--border); border-radius:4px; margin-bottom:20px; overflow:hidden; }
-    article img { width:100%; }
-    article .info { padding:12px; }
-    article .info h2 { font-size:1.2rem; margin-bottom:8px; }
-    article .info p { font-size:.9rem; color:#666; margin-bottom:8px; }
-    article .info a { color:var(--primary); text-decoration:none; font-weight:bold; }
-    article .info a:hover { color:var(--hover); }
+    /* Layout */
+    .main { display:flex; max-width:1200px; margin:20px auto; gap:20px; padding:0 10px; }
+    .content { flex:3; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:15px; }
+    .card { background:#fff; border:1px solid var(--border); border-radius:4px; overflow:hidden; }
+    .card img { width:100%; }
+    .card .info { padding:10px; }
+    .card h2 { font-size:1rem; margin-bottom:6px; color:var(--dark); }
+    .card p { font-size:.85rem; color:#555; margin-bottom:8px; }
+    .card a { color:var(--primary); text-decoration:none; font-size:.9rem; }
+    .card a:hover { color:var(--hover); }
 
-    aside { flex:1; min-width:200px; }
-    .widget { background:#fff; border:1px solid var(--border); border-radius:4px; padding:12px; margin-bottom:20px; }
-    .widget h3 { margin-bottom:12px; font-size:1rem; }
-    .widget ul { list-style:none; padding-left:0; }
+    .sidebar { flex:1; min-width:200px; }
+    .widget { background:#fff; border:1px solid var(--border); border-radius:4px; margin-bottom:20px; }
+    .widget h3 { background:var(--primary); color:#fff; padding:8px; font-size:1rem; border-radius:4px 4px 0 0; }
+    .widget ul { list-style:none; padding:10px; }
     .widget li { margin-bottom:8px; }
-    .widget a { color:var(--text); text-decoration:none; }
+    .widget a { color:var(--dark); text-decoration:none; font-size:.9rem; }
     .widget a:hover { color:var(--primary); }
 
-    #detail { display:none; padding:20px; background:#fff; border:1px solid var(--border); border-radius:4px; margin:20px auto; max-width:800px; }
-    #detail img { width:100%; border-radius:4px; margin-bottom:12px; }
-    #detail h2 { margin-bottom:8px; }
-    #detail .meta { font-size:.9rem; color:#666; margin-bottom:16px; }
+    /* Detail */
+    #detail { display:none; max-width:800px; margin:20px auto; background:#fff; border:1px solid var(--border); border-radius:4px; padding:20px; }
+    #detail img { width:100%; margin-bottom:15px; border-radius:4px; }
+    #detail h2 { margin-bottom:10px; color:var(--dark); }
+    #detail .meta { font-size:.85rem; color:#777; margin-bottom:15px; }
     #detail .body { line-height:1.6; }
+    #detail button { background:var(--primary); color:#fff; border:none; padding:8px 12px; cursor:pointer; border-radius:4px; font-size:.9rem; }
+    #detail button:hover { background:var(--hover); }
 
-    footer { text-align:center; padding:15px; background:#f9f9f9; border-top:1px solid var(--border); margin-top:40px; font-size:.9rem; color:#666; }
-    @media(max-width:768px){ nav{justify-content:center;} .container{flex-direction:column;} }
+    footer { text-align:center; padding:15px; background:#eee; font-size:.85rem; color:#555; margin-top:40px; }
+
+    @media(max-width:768px){
+      nav { justify-content:center; }
+      .main { flex-direction:column; }
+    }
   </style>
 </head>
 <body>
 
-  <header><h1>Tetora Lite 2.0</h1></header>
-
+  <header><h1>Detik Lite</h1></header>
   <nav>
-    <div class="item"><a href="#" onclick="goHome()">Home</a></div>
-    <div class="item">
-      <a href="#">Kategori ▼</a>
-      <div class="submenu">
-        <a href="#" onclick="filterCat('Nasional')">Nasional</a>
-        <a href="#" onclick="filterCat('Internasional')">Internasional</a>
-        <a href="#" onclick="filterCat('Teknologi')">Teknologi</a>
-        <a href="#" onclick="filterCat('Hiburan')">Hiburan</a>
-        <a href="#" onclick="filterCat('Olahraga')">Olahraga</a>
-      </div>
-    </div>
+    <a href="#" onclick="goHome()">Home</a>
+    <a href="#" onclick="filterCat('Nasional')">Nasional</a>
+    <a href="#" onclick="filterCat('Internasional')">Internasional</a>
+    <a href="#" onclick="filterCat('Teknologi')">Teknologi</a>
+    <a href="#" onclick="filterCat('Hiburan')">Hiburan</a>
+    <a href="#" onclick="filterCat('Olahraga')">Olahraga</a>
   </nav>
 
   <div class="slider"><div class="slides" id="slides"></div></div>
 
-  <div class="container">
-    <main id="list"></main>
-    <aside>
-      <div class="widget"><h3>Terbaru</h3><ul id="latest"></ul></div>
-      <div class="widget"><h3>Populer</h3><ul id="popular"></ul></div>
+  <div class="main">
+    <div class="content">
+      <div class="grid" id="grid"></div>
+    </div>
+    <aside class="sidebar">
+      <div class="widget"><h3>Trending</h3><ul id="trending"></ul></div>
+      <div class="widget"><h3>Terpopuler</h3><ul id="popular"></ul></div>
     </aside>
   </div>
 
@@ -95,71 +97,97 @@
     <p class="body" id="d-body"></p>
   </div>
 
-  <footer>&copy; 2025 Tetora Lite News</footer>
+  <footer>&copy; 2025 Detik Lite</footer>
 
   <script>
-    const url = 'https://opensheet.vercel.app/1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww/berita';
-    let data=[];
-    fetch(url).then(r=>r.json()).then(j=>{ data=j; init(); });
+    const URL = 'https://opensheet.vercel.app/1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww/berita';
+    let articles = [];
+
+    fetch(URL).then(r=>r.json()).then(j=>{ articles=j; init(); });
 
     function init(){
-      renderSlider(); renderList(); renderWidgets(); checkSlug();
+      renderSlider();
+      renderGrid();
+      renderWidgets();
+      checkSlug();
     }
 
     function renderSlider(){
-      const s=document.getElementById('slides');
-      data.slice(0,5).forEach(i=>{
-        const div=document.createElement('div'); div.className='slide';
-        div.innerHTML=`<img src="${i.Gambar}" alt=""><div class="cap">${i.Judul}</div>`;
+      const s = document.getElementById('slides');
+      articles.slice(0,5).forEach(a=>{
+        const div = document.createElement('div'); div.className='slide';
+        div.innerHTML = `<img src="${a.Gambar}" alt=""><div class="caption">${a.Judul}</div>`;
         s.appendChild(div);
       });
-      let idx=0; setInterval(()=>{
-        idx=(idx+1)%s.children.length; s.style.transform='translateX('+(-idx*100)+'%)';
+      let idx=0;
+      setInterval(()=>{
+        idx=(idx+1)%s.children.length;
+        s.style.transform = 'translateX('+(-idx*100)+'%)';
       },3000);
     }
 
-    function renderList(cat){
-      document.getElementById('detail').style.display='none';
-      document.querySelector('.slider').style.display='block';
-      const list=document.getElementById('list'); list.innerHTML='';
-      data.filter(i=>!cat||i.Label===cat).forEach(i=>{
-        const art=document.createElement('article');
-        art.innerHTML=`<img src="${i.Gambar}"><div class="info"><h2><a href="?slug=${i.Slug}">${i.Judul}</a></h2><p>${i.Tanggal} | ${i.Label}</p><p>${i.Isi.slice(0,120)}...</p></div>`;
-        art.querySelector('a').onclick=e=>{e.preventDefault(); showDetail(i.Slug);};
-        list.appendChild(art);
+    function renderGrid(cat){
+      goHomeUI();
+      const grid = document.getElementById('grid');
+      grid.innerHTML='';
+      articles.filter(a=>!cat||a.Label===cat).forEach(a=>{
+        const card = document.createElement('div'); card.className='card';
+        card.innerHTML = `
+          <img src="${a.Gambar}" alt="">
+          <div class="info">
+            <h2><a href="?slug=${a.Slug}">${a.Judul}</a></h2>
+            <p>${a.Tanggal}</p>
+            <p>${a.Isi.slice(0,100)}...</p>
+          </div>`;
+        card.querySelector('a').onclick=e=>{e.preventDefault(); showDetail(a.Slug);};
+        grid.appendChild(card);
       });
     }
+
     function renderWidgets(){
-      const lt=document.getElementById('latest'), pop=document.getElementById('popular');
-      lt.innerHTML=pop.innerHTML='';
-      data.slice(0,5).forEach(i=>{
-        const li=document.createElement('li'); li.innerHTML=`<a href="?slug=${i.Slug}">${i.Judul}</a>`;
-        li.querySelector('a').onclick=e=>{e.preventDefault(); showDetail(i.Slug);};
-        lt.appendChild(li);
+      const trend = document.getElementById('trending'), pop = document.getElementById('popular');
+      trend.innerHTML = pop.innerHTML = '';
+      articles.slice(0,5).forEach(a=>{
+        const li = document.createElement('li');
+        li.innerHTML = `<a href="?slug=${a.Slug}">${a.Judul}</a>`;
+        li.querySelector('a').onclick=e=>{e.preventDefault();showDetail(a.Slug);};
+        trend.appendChild(li);
       });
-      [...data].sort((a,b)=>b.View-a.View).slice(0,5).forEach(i=>{
-        const li=document.createElement('li'); li.innerHTML=`<a href="?slug=${i.Slug}">${i.Judul}</a>`;
-        li.querySelector('a').onclick=e=>{e.preventDefault(); showDetail(i.Slug);};
+      [...articles].sort((a,b)=>b.View-a.View).slice(0,5).forEach(a=>{
+        const li = document.createElement('li');
+        li.innerHTML = `<a href="?slug=${a.Slug}">${a.Judul}</a>`;
+        li.querySelector('a').onclick=e=>{e.preventDefault();showDetail(a.Slug);};
         pop.appendChild(li);
       });
     }
 
     function checkSlug(){
-      const s=new URLSearchParams(location.search).get('slug'); if(s) showDetail(s);
+      const s = new URLSearchParams(location.search).get('slug');
+      if(s) showDetail(s);
     }
+
     function showDetail(slug){
-      const i=data.find(x=>x.Slug===slug); if(!i) return goHome();
-      document.getElementById('d-title').textContent=i.Judul;
-      document.getElementById('d-meta').textContent=i.Tanggal+' | '+i.Label;
-      document.getElementById('d-img').src=i.Gambar;
-      document.getElementById('d-body').textContent=i.Isi;
-      document.querySelector('.container').style.display='none';
+      const a = articles.find(x=>x.Slug===slug);
+      if(!a) return goHome();
+      document.getElementById('d-title').textContent = a.Judul;
+      document.getElementById('d-meta').textContent = a.Tanggal+' | '+a.Label;
+      document.getElementById('d-img').src = a.Gambar;
+      document.getElementById('d-body').textContent = a.Isi;
+      document.querySelector('.main').style.display='none';
       document.querySelector('.slider').style.display='none';
       document.getElementById('detail').style.display='block';
     }
-    function goHome(){ document.querySelector('.container').style.display='flex'; document.querySelector('.slider').style.display='block'; document.getElementById('detail').style.display='none'; history.replaceState({},'',location.pathname); }
-    function filterCat(c){ renderList(c); }
-  </script>
 
+    function goHome(){
+      history.replaceState({},'',location.pathname);
+      renderGrid();
+    }
+    function goHomeUI(){
+      document.querySelector('.main').style.display='flex';
+      document.querySelector('.slider').style.display='block';
+      document.getElementById('detail').style.display='none';
+    }
+    function filterCat(cat){ renderGrid(cat); }
+  </script>
 </body>
 </html>
