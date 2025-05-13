@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <!-- Basic SEO -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SARJANA – Portal Berita</title>
   <meta name="description" content="SARJANA – Portal Berita dinamis dengan tampilan premium dan responsif.">
   <link rel="canonical" href="https://sarjana.web.id">
-  <!-- Open Graph -->
   <meta property="og:title" content="SARJANA – Portal Berita">
   <meta property="og:description" content="SARJANA – Portal Berita dinamis dengan tampilan premium dan responsif.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://sarjana.web.id">
   <meta property="og:image" content="https://via.placeholder.com/1200x630">
-  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -26,50 +23,52 @@
       --hover:        #5a3e85;
       --shadow:       rgba(0,0,0,0.1);
     }
-    * { box-sizing: border-box; margin:0; padding:0; }
+    * { box-sizing:border-box; margin:0; padding:0; }
     body {
-      font-family: 'Open Sans', sans-serif;
-      background: var(--light);
-      color: var(--dark);
-      line-height: 1.6;
+      font-family:'Open Sans',sans-serif;
+      background:var(--light);
+      color:var(--dark);
+      line-height:1.6;
     }
     /* Header */
     header {
-      background: linear-gradient(135deg, var(--primary-start), var(--primary-end));
-      color: #fff;
-      padding: 15px 20px;
-      display: flex; align-items: center; justify-content: space-between;
-      box-shadow: 0 2px 4px var(--shadow);
-      position: relative; z-index: 1000;
+      background:linear-gradient(135deg,var(--primary-start),var(--primary-end));
+      color:#fff; padding:15px 20px;
+      display:flex;align-items:center;justify-content:space-between;
+      box-shadow:0 2px 4px var(--shadow);position:relative;z-index:1000;
     }
-    .logo { font-size: 1.5rem; font-weight: 700; }
-    .social-top img { width:24px; height:24px; margin-left:12px; }
+    .logo a {
+      color:#fff; text-decoration:none;
+      font-size:1.5rem; font-weight:700;
+    }
+    .social-top img {
+      width:24px;height:24px;margin-left:12px;
+    }
     /* Hamburger */
     .hamburger {
-      display: none; flex-direction: column; cursor: pointer;
+      display:none; flex-direction:column; cursor:pointer;
     }
     .hamburger span {
-      height: 3px; width:25px; background:#fff; margin:4px 0; transition:0.3s;
+      height:3px; width:25px; background:#fff; margin:4px 0; transition:0.3s;
     }
     /* Navigation */
     nav {
-      background: #fff; border-bottom:1px solid var(--border);
-      transition: max-height .3s ease-in-out;
-      overflow: hidden;
+      background:#fff; border-bottom:1px solid var(--border);
+      overflow:hidden; transition:max-height .3s ease-in-out;
     }
-    nav.closed { max-height: 0; }
-    nav.open   { max-height: 500px; }
+    nav.closed { max-height:0; }
+    nav.open   { max-height:600px; }
     nav ul {
       list-style:none; display:flex; gap:20px;
-      justify-content: center; padding:10px 0;
+      justify-content:center; padding:10px 0;
     }
-    nav li { position: relative; }
+    nav li { position:relative; }
     nav a {
-      text-decoration:none; color: var(--dark);
+      text-decoration:none; color:var(--dark);
       font-weight:600; padding:8px; border-radius:4px; display:block;
     }
     nav a:hover, nav a.active {
-      background: var(--accent); color: var(--primary-end);
+      background:var(--accent); color:var(--primary-end);
     }
     .submenu {
       display:none; position:absolute; top:100%; left:0;
@@ -79,7 +78,6 @@
     }
     li.open > .submenu { display:block; }
     .submenu a { padding:10px 12px; }
-
     /* Slider */
     .slider {
       max-width:1200px; margin:25px auto; overflow:hidden;
@@ -93,7 +91,6 @@
       background:rgba(0,0,0,0.6); color:#fff; border-radius:4px;
       font-size:1.2rem; max-width:90%;
     }
-
     /* Featured */
     .featured {
       display:flex; flex-wrap:wrap; max-width:1200px;
@@ -104,10 +101,9 @@
       box-shadow:0 2px 6px var(--shadow);
     }
     .featured h2 {
-      flex:1; align-self:center; font-size:1.6rem;
-      padding:10px; color:var(--dark);
+      flex:1; align-self:center;
+      font-size:1.6rem; padding:10px; color:var(--dark);
     }
-
     /* Main & Grid */
     .main {
       display:flex; flex-wrap:wrap; max-width:1200px;
@@ -131,15 +127,13 @@
     .card p  { font-size:.9rem; color:#666; margin-bottom:10px; }
     .card a  { color:var(--accent); font-weight:600; }
     .card a:hover { color:var(--primary-end); }
-
     /* Ad slot */
     .ad-slot {
       background:var(--light); border:2px dashed var(--accent);
       color:var(--accent); text-align:center; padding:30px;
       margin:24px 0; border-radius:8px;
     }
-
-    /* Sidebar Widgets */
+    /* Sidebar */
     aside { flex:1; min-width:240px; }
     .widget {
       background:#fff; border:1px solid var(--border);
@@ -159,10 +153,9 @@
     .widget li:nth-child(2){animation-delay:.3s;}
     .widget li:nth-child(3){animation-delay:.4s;}
     .widget li:nth-child(4){animation-delay:.5s;}
-    .widget a { font-size:.9rem; color:var(--dark); text-decoration:none; }
+    .widget a { font-size:.9rem; color:var(--dark); }
     .widget a:hover { color:var(--accent); }
-
-    /* Detail Page */
+    /* Detail */
     #detail {
       display:none; max-width:800px; margin:30px auto;
       background:#fff; border:1px solid var(--border);
@@ -174,51 +167,41 @@
       border:none; padding:8px 14px; border-radius:4px;
       cursor:pointer; margin-bottom:20px;
     }
-    #detail button:hover {
-      background:var(--hover); color:#fff;
-    }
-    #detail h2 { font-size:1.5rem; margin-bottom:12px; }
-    #detail .meta { font-size:.9rem; color:#777; margin-bottom:16px; }
-    #detail img   { width:100%; border-radius:6px; margin-bottom:16px; }
-    #detail .body { line-height:1.7; color:#444; margin-bottom:18px; }
-    #detail .share {
-      display:flex; gap:12px; font-size:1.4rem; margin-bottom:20px;
-    }
-    #detail .share a {
-      color:var(--dark); transition:color .2s;
-    }
+    #detail button:hover { background:var(--hover); color:#fff; }
+    #detail h2     { font-size:1.5rem; margin-bottom:12px; }
+    #detail .meta  { font-size:.9rem; color:#777; margin-bottom:16px; }
+    #detail img    { width:100%; border-radius:6px; margin-bottom:16px; }
+    #detail .body  { line-height:1.7; color:#444; margin-bottom:18px; }
+    #detail .share { display:flex; gap:12px; font-size:1.4rem; margin-bottom:20px; }
+    #detail .share a { color:var(--dark); transition:color .2s; }
     #detail .share a:hover { color:var(--accent); }
-
     /* Footer */
     footer {
       text-align:center; padding:16px; background:var(--light);
       border-top:1px solid var(--border); font-size:.85rem; color:#555;
       margin-top:40px;
     }
-
     @keyframes fadeIn {
       to { opacity:1; transform:translateX(0); }
     }
     @media(max-width:768px) {
       .hamburger { display:flex; }
-      nav {
-        position:absolute; top:65px; left:0; width:100%;
-      }
+      nav { position:absolute; top:65px; left:0; width:100%; }
       nav ul { flex-direction:column; width:100%; }
       nav li { width:100%; }
       nav a { padding:12px 20px; border-bottom:1px solid #f1f1f1; }
       li.open > .submenu { display:block; }
       .submenu a { padding-left:40px; background:#f9f9f9; }
-      .main { flex-direction:column; }
-      .featured { flex-direction:column; }
+      .main    { flex-direction:column; }
+      .featured{ flex-direction:column; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Header & Social -->
+  <!-- HEADER -->
   <header>
-    <div class="logo"><a href="/" style="color:#fff;text-decoration:none;">SARJANA</a></div>
+    <div class="logo"><a href="/">SARJANA</a></div>
     <div class="social-top">
       <a href="#"><img src="https://via.placeholder.com/24?text=F" alt="Facebook"></a>
       <a href="#"><img src="https://via.placeholder.com/24?text=T" alt="Twitter"></a>
@@ -229,35 +212,19 @@
     </div>
   </header>
 
-  <!-- Navigation -->
-  <nav id="navbar" class="closed">
-    <ul>
-      <li><a href="/" onclick="goHome()">Home</a></li>
-      <li class="menu-item" onclick="toggleSubmenu(event)">
-        <a href="javascript:;">Berita ▼</a>
-        <ul class="submenu">
-          <li><a href="?label=Nasional">Nasional</a></li>
-          <li><a href="?label=Internasional">Internasional</a></li>
-          <li><a href="?label=Teknologi">Teknologi</a></li>
-          <li><a href="?label=Olahraga">Olahraga</a></li>
-        </ul>
-      </li>
-      <li><a href="?label=Ekonomi">Ekonomi</a></li>
-      <li><a href="?label=Hiburan">Hiburan</a></li>
-      <li><a href="?label=Lifestyle">Lifestyle</a></li>
-    </ul>
-  </nav>
+  <!-- NAVIGATION -->
+  <nav id="navbar" class="closed"></nav>
 
-  <!-- Slider -->
+  <!-- SLIDER -->
   <div class="slider"><div class="slides" id="slides"></div></div>
 
-  <!-- Featured Post -->
+  <!-- FEATURED POST -->
   <div class="featured">
     <img id="feat-img" src="" alt="Featured">
     <h2 id="feat-title"></h2>
   </div>
 
-  <!-- Main Content & Sidebar -->
+  <!-- MAIN CONTENT + SIDEBAR -->
   <div class="main">
     <div class="content">
       <div class="ad-slot">[ AD SLOT ]</div>
@@ -279,58 +246,145 @@
     </aside>
   </div>
 
-  <!-- Detail Page -->
+  <!-- DETAIL PAGE -->
   <div id="detail">
     <button onclick="goHome()">← Kembali</button>
     <h2 id="d-title"></h2>
     <p class="meta" id="d-meta"></p>
     <img id="d-img" src="" alt="">
     <div class="share">
-      <a href="#" title="Share Facebook">👍</a>
-      <a href="#" title="Share Twitter">🐦</a>
-      <a href="#" title="Share WhatsApp">💬</a>
-      <a href="#" title="Share LinkedIn">🔗</a>
+      <a href="#" title="Share FB">👍</a>
+      <a href="#" title="Share TW">🐦</a>
+      <a href="#" title="Share WA">💬</a>
+      <a href="#" title="Share LI">🔗</a>
     </div>
     <p class="body" id="d-body"></p>
   </div>
 
-  <!-- Footer -->
+  <!-- FOOTER -->
   <footer>
     powered by <a href="https://opensite.web.id" target="_blank">opensite.web.id</a>
   </footer>
 
-  <!-- JavaScript -->
   <script>
+    // Data source
     const URL = 'https://opensheet.vercel.app/1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww/berita';
-    let articles=[];
+    let articles = [];
 
-    fetch(URL)
-      .then(res=>res.json())
-      .then(json=>{ articles=json; init(); });
+    // Define menu structure
+    const MENU = [
+      { title: 'Home', path: '/' },
+      { title: 'Berita', path: '/berita', submenu: [
+        { title: 'Nasional', path: '/Nasional' },
+        { title: 'Internasional', path: '/Internasional' },
+        { title: 'Teknologi', path: '/Teknologi' },
+        { title: 'Olahraga', path: '/Olahraga' },
+      ] },
+      { title: 'Ekonomi', path: '/Ekonomi' },
+      { title: 'Hiburan', path: '/Hiburan' },
+      { title: 'Lifestyle', path: '/Lifestyle' },
+    ];
 
-    function toggleNav() {
-      document.getElementById('navbar').classList.toggle('open');
+    // Build nav HTML
+    function buildNav() {
+      const nav = document.getElementById('navbar');
+      const ul = document.createElement('ul');
+      MENU.forEach(item => {
+        const li = document.createElement('li');
+        li.className = item.submenu ? 'menu-item' : '';
+        addActiveClass(li, item.path);
+
+        const a = document.createElement('a');
+        a.href = item.path;
+        a.textContent = item.title;
+        a.onclick = navClick;
+        li.appendChild(a);
+
+        if (item.submenu) {
+          const sub = document.createElement('ul');
+          sub.className = 'submenu';
+          item.submenu.forEach(s => {
+            const sli = document.createElement('li');
+            const sa = document.createElement('a');
+            sa.href = s.path;
+            sa.textContent = s.title;
+            sa.onclick = navClick;
+            sli.appendChild(sa);
+            sub.appendChild(sli);
+          });
+          li.appendChild(sub);
+        }
+        ul.appendChild(li);
+      });
+      nav.appendChild(ul);
     }
-    function toggleSubmenu(e) {
-      if (window.innerWidth <= 768) {
-        e.currentTarget.classList.toggle('open');
+
+    function addActiveClass(li, path) {
+      if (location.pathname === path) li.querySelector('a').classList.add('active');
+    }
+
+    function navClick(e) {
+      e.preventDefault();
+      const url = new URL(e.currentTarget.href);
+      history.pushState({}, '', url.pathname);
+      handleRouting();
+      if (window.innerWidth <= 768) toggleNav(false);
+    }
+
+    // Close mobile nav when click outside
+    document.addEventListener('click', (e) => {
+      const nav = document.getElementById('navbar');
+      const ham = document.querySelector('.hamburger');
+      if (!nav.contains(e.target) && !ham.contains(e.target)) {
+        toggleNav(false);
       }
+    });
+
+    function toggleNav(force) {
+      const nav = document.getElementById('navbar');
+      if (force === false) nav.classList.remove('open');
+      else nav.classList.toggle('open');
     }
+
+    // Fetch & initialize
+    fetch(URL).then(r=>r.json()).then(json=>{
+      articles = json;
+      buildNav();
+      init();
+    });
 
     function init(){
       renderSlider();
       renderFeatured();
-      renderGrid();
       renderWidgets();
       handleRouting();
     }
 
+    // Routing based on pathname
+    function handleRouting(){
+      const path = decodeURIComponent(location.pathname);
+      if (path === '/' || path === '/berita') return renderGrid();
+      // check submenu labels
+      const menuItem = MENU.find(m => m.path === path);
+      if (menuItem && !menuItem.submenu) return renderGrid(menuItem.title);
+      if (menuItem && menuItem.submenu) return renderGrid(); 
+      // check if submenu label
+      for (const m of MENU.filter(m=>m.submenu).flatMap(m=>m.submenu)) {
+        if (m.path === path) return renderGrid(m.title);
+      }
+      // else treat as slug
+      const slug = path.slice(1);
+      return showDetail(slug);
+    }
+
+    // Slider
     function renderSlider(){
-      const s=document.getElementById('slides');
+      const s = document.getElementById('slides');
+      s.innerHTML = '';
       articles.slice(0,5).forEach(a=>{
-        const div=document.createElement('div');
+        const div = document.createElement('div');
         div.className='slide';
-        div.innerHTML=`<img src="${a.Gambar}" alt=""><div class="caption">${a.Judul}</div>`;
+        div.innerHTML = `<img src="${a.Gambar}" alt=""><div class="caption">${a.Judul}</div>`;
         s.appendChild(div);
       });
       let idx=0;
@@ -340,78 +394,73 @@
       },3000);
     }
 
+    // Featured Post
     function renderFeatured(){
       const a=articles[0]||{};
-      document.getElementById('feat-img').src=a.Gambar||'';
-      document.getElementById('feat-title').textContent=a.Judul||'';
+      document.getElementById('feat-img').src = a.Gambar||'';
+      document.getElementById('feat-title').textContent = a.Judul||'';
     }
 
+    // Grid/List
     function renderGrid(label){
       showHomeUI();
-      const g=document.getElementById('grid');
-      g.innerHTML='';
+      const g = document.getElementById('grid'); g.innerHTML='';
       articles
-        .filter(a=>!label || a.Label===label)
-        .forEach(a=>{
+        .filter(a => !label || a.Label === label)
+        .forEach(a => {
           const c=document.createElement('div'); c.className='card';
-          c.innerHTML=`<img src="${a.Gambar}" alt=""><div class="info">
-            <h2><a href="?slug=${a.Slug}">${a.Judul}</a></h2><p>${a.Tanggal}</p>
-          </div>`;
-          c.querySelector('a').onclick=e=>{e.preventDefault(); showDetail(a.Slug);};
+          c.innerHTML = `<img src="${a.Gambar}" alt="">
+            <div class="info">
+              <h2><a href="/${a.Slug}">${a.Judul}</a></h2>
+              <p>${a.Tanggal}</p>
+            </div>`;
+          c.querySelector('a').onclick = e => { e.preventDefault(); navClick(e); showDetail(a.Slug); };
           g.appendChild(c);
         });
     }
 
+    // Widgets
     function renderWidgets(){
-      const t=document.getElementById('trending'), p=document.getElementById('popular');
+      const t=document.getElementById('trending'),
+            p=document.getElementById('popular');
       t.innerHTML=p.innerHTML='';
-      articles.slice(0,5).forEach(a=>makeLI(t,a));
+      articles.slice(0,5).forEach(a => makeLI(t,a));
       [...articles].sort((a,b)=>b.View-a.View).slice(0,5).forEach(a=>makeLI(p,a));
     }
     function makeLI(parent,a){
       const li=document.createElement('li');
-      li.innerHTML=`<a href="?slug=${a.Slug}">${a.Judul}</a>`;
-      li.querySelector('a').onclick=e=>{e.preventDefault(); showDetail(a.Slug);};
+      li.innerHTML = `<a href="/${a.Slug}">${a.Judul}</a>`;
+      li.querySelector('a').onclick = e=>{ e.preventDefault(); navClick(e); showDetail(a.Slug); };
       parent.appendChild(li);
     }
 
-    function handleRouting(){
-      const params=new URLSearchParams(location.search);
-      if(params.has('slug')) return showDetail(params.get('slug'));
-      if(params.has('label')) return renderGrid(params.get('label'));
-      renderGrid();
-    }
-
+    // Detail
     function showDetail(slug){
-      const a=articles.find(x=>x.Slug===slug);
+      const a = articles.find(x=>x.Slug === slug);
       if(!a) return renderGrid();
-      document.getElementById('d-title').textContent=a.Judul;
-      document.getElementById('d-meta').textContent=`${a.Tanggal} | ${a.Label}`;
-      document.getElementById('d-img').src=a.Gambar;
-      document.getElementById('d-body').textContent=a.Isi;
-      document.querySelector('.slider').style.display='none';
-      document.querySelector('.featured').style.display='none';
-      document.querySelector('.main').style.display='none';
-      document.getElementById('detail').style.display='block';
+      document.getElementById('d-title').textContent = a.Judul;
+      document.getElementById('d-meta').textContent = `${a.Tanggal} | ${a.Label}`;
+      document.getElementById('d-img').src = a.Gambar;
+      document.getElementById('d-body').textContent = a.Isi;
+      document.querySelector('.slider').style.display = 'none';
+      document.querySelector('.featured').style.display = 'none';
+      document.querySelector('.main').style.display = 'none';
+      document.getElementById('detail').style.display = 'block';
     }
 
     function goHome(){
-      history.replaceState({},'', '/');
+      history.pushState({},'', '/');
       renderGrid();
     }
 
     function showHomeUI(){
-      document.querySelector('.slider').style.display='block';
-      document.querySelector('.featured').style.display='flex';
-      document.querySelector('.main').style.display='flex';
-      document.getElementById('detail').style.display='none';
+      document.querySelector('.slider').style.display = 'block';
+      document.querySelector('.featured').style.display = 'flex';
+      document.querySelector('.main').style.display = 'flex';
+      document.getElementById('detail').style.display = 'none';
     }
 
-    function filterCat(label){
-      history.replaceState({},'', '?label='+encodeURIComponent(label));
-      renderGrid(label);
-    }
+    window.onpopstate = handleRouting;
   </script>
-
 </body>
 </html>
