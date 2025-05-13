@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tetora Clone</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header, footer {
+      background-color: #222;
+      color: white;
+      padding: 10px;
+      text-align: center;
+    }
+    nav {
+      background: #444;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 10px;
+    }
+    .content {
+      flex: 3;
+      padding: 10px;
+    }
+    .sidebar {
+      flex: 1;
+      background: #f4f4f4;
+      padding: 10px;
+    }
+    .card {
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+      padding: 10px;
+    }
+    .card img {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Website Berita</h1>
+  </header>
+  <nav id="menu">Memuat menu...</nav>
+  <div class="container">
+    <div class="content" id="konten">Memuat berita...</div>
+    <div class="sidebar">
+      <h3>Berita Populer</h3>
+      <div id="sidebar">Memuat...</div>
+    </div>
+  </div>
+  <footer>
+    &copy; 2025 Tetora Clone by Open Site
+  </footer>
+  <script>
+    const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT0DStwnwMQY_Acs84gtSpok7A2qYVEhtWh-FI7kQkP8G_kmXrFuUAhJv63rUobdeGyj3doAy2du35U/pub?gid=0&single=true&output=csv';
+    async function ambilData() {
+      const res = await fetch(sheetURL);
+      const data = await res.text();
+      const rows = data.split('\n').slice(1);
+      const konten = document.getElementById('konten');
+      konten.innerHTML = '';
+      rows.forEach(row => {
+        const cols = row.split(',');
+        if (cols[0] && cols[6] !== 'off') {
+          konten.innerHTML += `
+            <div class="card">
+              <h2>${cols[0]}</h2>
+              <img src="${cols[2]}" alt="${cols[0]}" />
+              <p>${cols[3].substring(0, 150)}...</p>
+              <small>${cols[7]}</small>
+            </div>`;
+        }
+      });
+    }
+    ambilData();
+  </script>
+</body>
+</html>
