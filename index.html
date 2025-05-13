@@ -1,21 +1,224 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tetora News Final</title>
+  <title>Tetora News Clone</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: sans-serif; background: #f4f4f4; padding: 40px; }
-    .box { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    h1 { color: #ff0033; }
+    :root {
+      --primary: #ff0033;
+      --nav-bg: #1a1a1a;
+      --bg: #f4f4f4;
+      --text: #333;
+    }
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body { font-family: 'Roboto', sans-serif; background: var(--bg); color: var(--text); }
+    header { background: var(--nav-bg); color: white; padding: 20px; text-align: center; }
+    header h1 { font-size: 2em; }
+    nav { background: var(--primary); display: flex; align-items: center; padding: 10px 20px; }
+    nav .menu { position: relative; margin-right: 20px; }
+    nav .menu > a { color: white; text-decoration: none; padding: 8px; display: block; }
+    nav .submenu { display: none; position: absolute; top: 100%; left: 0; background: white; min-width: 150px; }
+    nav .submenu a { color: var(--text); padding: 8px 12px; display: block; text-decoration: none; }
+    nav .menu:hover .submenu { display: block; }
+    .slider { position: relative; overflow: hidden; background: white; margin: 20px auto; max-width: 1200px; }
+    .slides { display: flex; transition: transform 0.5s ease-in-out; }
+    .slide { min-width: 100%; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+    .slide img { width:100%; height:auto; }
+    .slide-caption { position: absolute; bottom:20px; left:20px; background:rgba(0,0,0,0.5); color:white; padding:10px; border-radius:5px; }
+    .container { display:flex; max-width:1200px; margin:20px auto; gap:20px; }
+    main { flex:3; }
+    article { background:white; margin-bottom:20px; border-radius:5px; overflow:hidden; box-shadow:0 0 5px rgba(0,0,0,0.1); }
+    article img { width:100%; height:auto; }
+    article .info { padding:15px; }
+    article .info h2 { font-size:1.2em; margin-bottom:10px; }
+    article .info p { font-size:0.9em; color:gray; margin-bottom:10px; }
+    article .info a { color:var(--primary); text-decoration:none; }
+    aside { flex:1; }
+    .widget { background:white; padding:15px; margin-bottom:20px; border-radius:5px; box-shadow:0 0 5px rgba(0,0,0,0.1); }
+    .widget h3 { margin-bottom:15px; }
+    .widget ul { list-style:none; padding-left:0; }
+    .widget ul li { margin-bottom:10px; }
+    footer { background: var(--nav-bg); color:white; text-align:center; padding:20px; margin-top:20px; }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h1>Versi Final Tetora News</h1>
-    <p>Template sudah siap untuk digunakan.</p>
-    <p>Tinggal upload ke GitHub atau Vercel, atau buka langsung di browser kamu.</p>
+
+  <header>
+    <h1>Tetora News Clone</h1>
+  </header>
+
+  <nav>
+    <div class="menu">
+      <a href="#" onclick="tampilkanBeranda()">Home</a>
+    </div>
+    <div class="menu">
+      <a href="#">Kategori ▼</a>
+      <div class="submenu">
+        <a href="#" onclick="filterKategori('Nasional')">Nasional</a>
+        <a href="#" onclick="filterKategori('Teknologi')">Teknologi</a>
+        <a href="#" onclick="filterKategori('Hiburan')">Hiburan</a>
+        <a href="#" onclick="filterKategori('Olahraga')">Olahraga</a>
+      </div>
+    </div>
+    <div class="menu">
+      <a href="#" onclick="filterKategori('Internasional')">Internasional</a>
+    </div>
+  </nav>
+
+  <div class="slider" id="slider">
+    <div class="slides" id="slides"></div>
   </div>
+
+  <div class="container">
+    <main id="berita-list"></main>
+    <aside>
+      <div class="widget">
+        <h3>Berita Populer</h3>
+        <ul id="populer"></ul>
+      </div>
+      <div class="widget">
+        <h3>Terakhir</h3>
+        <ul id="terbaru"></ul>
+      </div>
+    </aside>
+  </div>
+
+  <div id="detail-page" class="container" style="display:none;">
+    <div style="flex:3;">
+      <article>
+        <img id="detail-img" src="" alt="" />
+        <div class="info">
+          <h2 id="detail-title"></h2>
+          <p id="detail-meta"></p>
+          <p id="detail-body"></p>
+          <a href="#" onclick="tampilkanBeranda()">← Kembali</a>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 Tetora News Clone
+  </footer>
+
+  <script>
+    const sheetURL = 'https://opensheet.vercel.app/1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww/berita';
+    let semuaBerita = [];
+
+    fetch(sheetURL)
+      .then(res => res.json())
+      .then(data => {
+        semuaBerita = data;
+        initSlider();
+        renderBeranda();
+        cekSlug();
+      });
+
+    function initSlider() {
+      const slides = document.getElementById('slides');
+      semuaBerita.slice(0, 5).forEach(b => {
+        const div = document.createElement('div');
+        div.className = 'slide';
+        div.innerHTML = `<img src="${b.Gambar}" alt="${b.Judul}"><div class="slide-caption">${b.Judul}</div>`;
+        slides.appendChild(div);
+      });
+      let idx = 0;
+      setInterval(() => {
+        idx = (idx + 1) % slides.children.length;
+        slides.style.transform = 'translateX(' + (-idx * 100) + '%)';
+      }, 3000);
+    }
+
+    function renderBeranda() {
+      document.getElementById('detail-page').style.display = 'none';
+      const list = document.getElementById('berita-list');
+      const populer = document.getElementById('populer');
+      const terbaru = document.getElementById('terbaru');
+      list.innerHTML = '';
+      populer.innerHTML = '';
+      terbaru.innerHTML = '';
+
+      semuaBerita.forEach((b, i) => {
+        // Populer by View
+        const liPop = document.createElement('li');
+        liPop.innerHTML = `<a href="?slug=${b.Slug}">${b.Judul}</a>`;
+        populer.appendChild(liPop);
+        // Terbaru (first 5)
+        if (i < 5) {
+          const liTer = document.createElement('li');
+          liTer.innerHTML = `<a href="?slug=${b.Slug}">${b.Judul}</a>`;
+          terbaru.appendChild(liTer);
+        }
+        // Artikel utama
+        const art = document.createElement('article');
+        art.innerHTML = `
+          <img src="${b.Gambar}" alt="${b.Judul}" />
+          <div class="info">
+            <h2><a href="?slug=${b.Slug}">${b.Judul}</a></h2>
+            <p>${b.Tanggal} | ${b.Label}</p>
+            <p>${b.Isi.slice(0, 100)}...</p>
+            <a href="?slug=${b.Slug}">Baca Selengkapnya</a>
+          </div>`;
+        list.appendChild(art);
+      });
+
+      // Urutkan populer
+      dokument.getElementById('populer').innerHTML = '';
+      semuaBerita
+        .sort((a,b)=>b.View - a.View)
+        .slice(0,5)
+        .forEach(b=>{
+          const li = document.createElement('li');
+          li.innerHTML = `<a href="?slug=${b.Slug}">${b.Judul}</a>`;
+          document.getElementById('populer').appendChild(li);
+        });
+    }
+
+    function cekSlug() {
+      const slug = new URLSearchParams(window.location.search).get('slug');
+      if (slug) tampilkanDetail(slug);
+    }
+
+    function tampilkanDetail(slug) {
+      const b = semuaBerita.find(x=>x.Slug===slug);
+      if (!b) return;
+      document.getElementById('detail-page').style.display = 'flex';
+      document.querySelector('.slider').style.display = 'none';
+      document.getElementById('berita-list').innerHTML='';
+      document.getElementById('detail-img').src = b.Gambar;
+      document.getElementById('detail-title').textContent = b.Judul;
+      document.getElementById('detail-meta').textContent = `${b.Tanggal} | ${b.Label}`;
+      document.getElementById('detail-body').textContent = b.Isi;
+    }
+
+    function filterKategori(kat) {
+      const filtered = semuaBerita.filter(b=>b.Label===kat);
+      document.querySelector('.slider').style.display='none';
+      const list = document.getElementById('berita-list');
+      list.innerHTML='';
+      filtered.forEach(b=>{
+        const art = document.createElement('article');
+        art.innerHTML = `
+          <img src="${b.Gambar}" alt="${b.Judul}" />
+          <div class="info">
+            <h2><a href="?slug=${b.Slug}">${b.Judul}</a></h2>
+            <p>${b.Tanggal}</p>
+            <p>${b.Isi.slice(0,100)}...</p>
+            <a href="?slug=${b.Slug}">Baca Selengkapnya</a>
+          </div>`;
+        list.appendChild(art);
+      });
+    }
+
+    function tampilkanBeranda() {
+      document.querySelector('.slider').style.display='block';
+      document.getElementById('detail-page').style.display = 'none';
+      history.pushState({}, '', window.location.pathname);
+      renderBeranda();
+    }
+  </script>
+
 </body>
 </html>
