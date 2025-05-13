@@ -1,75 +1,89 @@
-<!DOCTYPE html><html lang="id">
+<!DOCTYPE html><html lang="id" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sarjana – Portal Berita</title>
   <meta name="description" content="SARJANA – Portal Berita dinamis dengan tampilan premium dan responsif">
-  <!-- Font Awesome for social icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-p1CmYbQky8v0pn6xS1xZQhBJEd4SgtVhC1nOWrlvEoFVS5jsZ+bZbEvR8tjA0M8rZ2I5Vqcp7mUq2ql5Wl8+Dw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     :root {
-      --primary: #1a1a2e;
-      --secondary: #16213e;
-      --accent: #e94560;
-      --light: #f5f6fa;
-      --dark: #0f3460;
-      --border: #ccc;
+      --primary: #1e3a8a;
+      --secondary: #2563eb;
+      --accent: #3b82f6;
+      --light-bg: #f4f6fa;
+      --light-text: #1f2937;
+      --dark-bg: #1f2937;
+      --dark-text: #f4f6fa;
+      --border: #e2e8f0;
       --shadow: rgba(0,0,0,0.1);
     }
+    [data-theme="light"] {
+      --bg: var(--light-bg);
+      --text: var(--light-text);
+    }
+    [data-theme="dark"] {
+      --bg: var(--dark-bg);
+      --text: var(--dark-text);
+    }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Open Sans', sans-serif; background: var(--light); color: var(--dark); }
+    body { font-family: 'Open Sans', sans-serif; background: var(--bg); color: var(--text); transition: background .3s, color .3s; }
     a { text-decoration: none; color: inherit; }
-    /* Header */
-    header { background: var(--primary); color: #fff; padding: 15px 20px; position: relative; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 4px var(--shadow); }
+    header { background: var(--primary); color: #fff; padding: 15px 20px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; }
     .logo { display: flex; align-items: center; }
     .logo img { width: 40px; height: 40px; margin-right: 10px; }
-    .logo h1 { font-size: 1.5rem; }
-    /* Navigation */
-    nav { }
-    nav ul { list-style: none; display: flex; }
-    nav ul li { position: relative; border-right: 1px solid var(--border); }
-    nav ul li:last-child { border-right: none; }
-    nav ul li a { display: block; padding: 10px 15px; font-weight: 600; color: #fff; }
-    nav ul li.has-sub > a::after { content: ' ▾'; margin-left: 4px; }
-    nav ul li:hover > a, nav ul li a.active { background: var(--accent); color: #fff; }
-    nav ul li ul { display: none; position: absolute; top: 100%; left: 0; background: var(--secondary); box-shadow: 0 2px 6px var(--shadow); min-width: 150px; }
-    nav ul li:hover ul { display: block; }
-    nav ul li ul li { border: none; }
-    nav ul li ul li a { padding: 10px 15px; color: #fff; }
-    nav ul li ul li a:hover { background: var(--accent); }
-    /* Hamburger */
-    .burger { display: none; flex-direction: column; cursor: pointer; }
-    .burger span { height: 3px; width: 25px; background: #fff; margin: 4px 0; transition: 0.3s; }
+    .logo h1 { font-size: 1.5rem; font-weight: 700; }
+    nav { flex: 1; margin-left: 30px; }
+    .menu { list-style: none; display: flex; align-items: center; }
+    .menu li { position: relative; }
+    .menu li + li { margin-left: 20px; }
+    .menu a { display: block; padding: 10px 12px; font-weight: 600; border-radius: 4px; }
+    .menu a:hover, .menu a.active { background: var(--accent); }
+    .has-sub > a::after { content: '\25BE'; font-size: 0.6rem; margin-left: 6px; }
+    .has-sub:hover > ul { display: block; }
+    .submenu { display: none; position: absolute; top: 100%; left: 0; background: var(--secondary); border-radius: 4px; box-shadow: 0 2px 6px var(--shadow); min-width: 160px; }
+    .submenu li { border-bottom: 1px solid var(--border); }
+    .submenu li:last-child { border-bottom: none; }
+    .submenu a { padding: 10px 15px; color: #fff; }
+    .submenu a:hover { background: var(--accent); }
+    .actions { display: flex; align-items: center; }
+    .actions a { margin-left: 15px; padding: 8px 14px; border: 1px solid #fff; border-radius: 4px; transition: background .3s; }
+    .actions a.signup { background: #fff; color: var(--primary); }
+    .actions a.login { background: transparent; color: #fff; }
+    .actions a.signup:hover { background: var(--accent); color: #fff; }
+    .actions a.login:hover { background: var(--accent); }
+    .theme-toggle { margin-left: 20px; cursor: pointer; font-size: 1.2rem; }
+    .burger { display: none; flex-direction: column; cursor: pointer; margin-left: auto; }
+    .burger span { width: 25px; height: 3px; background: #fff; margin: 4px 0; transition: 0.3s; }
     @media (max-width: 768px) {
-      nav ul { display: none; flex-direction: column; background: var(--primary); width: 100%; }
-      nav ul.show { display: flex; }
+      nav { position: absolute; top: 65px; left: 0; width: 100%; background: var(--primary); display: none; flex-direction: column; }
+      nav.show { display: flex; }
+      .menu { flex-direction: column; }
+      .menu li + li { margin-left: 0; }
+      .actions { flex-direction: column; margin: 10px 0; }
+      .actions a { margin-left: 0; margin-bottom: 10px; }
+      .theme-toggle { margin-left: 0; }
       .burger { display: flex; }
     }
-    /* Slider */
     .slider { position: relative; overflow: hidden; max-width: 100%; margin: 20px auto; }
-    .slides { display: flex; transition: transform 0.5s ease; }
+    .slides { display: flex; transition: transform 0.5s ease-in-out; }
     .slide { min-width: 100%; position: relative; }
     .slide img { width: 100%; display: block; }
-    .slide .caption { position: absolute; bottom: 20px; left: 30px; background: rgba(0,0,0,0.5); color: #fff; padding: 10px 15px; border-radius: 4px; font-size: 1.2rem; }
-    /* Main Layout */
+    .slide .caption { position: absolute; bottom: 20px; left: 30px; background: rgba(0,0,0,0.6); color: #fff; padding: 10px 15px; border-radius: 4px; font-size: 1.2rem; }
     .container { display: flex; flex-wrap: wrap; max-width: 1200px; margin: 20px auto; }
     .content { flex: 3; min-width: 300px; padding: 0 20px; }
     .sidebar { flex: 1; min-width: 250px; padding: 0 20px; }
-    /* Berita Cards */
-    .card { background: #fff; margin-bottom: 20px; box-shadow: 0 2px 6px var(--shadow); border-radius: 8px; overflow: hidden; }
+    .card { background: var(--bg); margin-bottom: 20px; box-shadow: 0 2px 6px var(--shadow); border-radius: 8px; overflow: hidden; }
     .card img { width: 100%; }
     .card .info { padding: 15px; }
-    .card h3 { margin-bottom: 10px; }
-    .card p { color: #555; font-size: 0.95rem; }
-    /* Widgets */
-    .widget { background: #fff; margin-bottom: 20px; box-shadow: 0 2px 6px var(--shadow); border-radius: 6px; }
+    .card h3 { margin-bottom: 10px; color: var(--primary); }
+    .card p { color: var(--text); font-size: 0.95rem; }
+    .widget { background: var(--bg); margin-bottom: 20px; box-shadow: 0 2px 6px var(--shadow); border-radius: 6px; }
     .widget h3 { background: var(--secondary); color: #fff; padding: 10px 15px; font-size: 1.1rem; border-top-left-radius: 6px; border-top-right-radius: 6px; }
     .widget ul { list-style: none; padding: 10px 15px; }
     .widget ul li { margin-bottom: 10px; }
-    .widget ul li a { color: var(--dark); }
+    .widget ul li a { color: var(--primary); }
     .widget ul li a:hover { color: var(--accent); }
-    .widget .ad-slot { background: #fafafa; border: 2px dashed var(--accent); padding: 20px; text-align: center; border-radius: 6px; margin: 15px; }
-    /* Footer */
+    .widget .ad-slot { background: var(--light-bg); border: 2px dashed var(--accent); padding: 20px; text-align: center; border-radius: 6px; margin: 15px 0; }
     footer { background: var(--secondary); color: #fff; padding: 40px 20px; }
     .footer-container { display: flex; flex-wrap: wrap; max-width: 1200px; margin: 0 auto; }
     .footer-col { flex: 1; min-width: 200px; margin: 10px; }
@@ -87,14 +101,14 @@
       <img src="https://via.placeholder.com/40?text=S" alt="Sarjana Logo">
       <h1>Sarjana</h1>
     </div>
-    <div class="burger" onclick="toggleMenu()">
+    <div class="burger" onclick="document.querySelector('nav').classList.toggle('show')">
       <span></span><span></span><span></span>
     </div>
     <nav>
-      <ul id="main-menu">
-        <li><a href="/">Home</a></li>
+      <ul class="menu" id="main-menu">
+        <li><a href="/" class="active">Home</a></li>
         <li class="has-sub"><a href="/berita">Berita</a>
-          <ul>
+          <ul class="submenu">
             <li><a href="/nasional">Nasional</a></li>
             <li><a href="/internasional">Internasional</a></li>
             <li><a href="/teknologi">Teknologi</a></li>
@@ -105,6 +119,11 @@
         <li><a href="/hiburan">Hiburan</a></li>
         <li><a href="/lifestyle">Lifestyle</a></li>
       </ul>
+      <div class="actions">
+        <a href="/signup" class="signup">Sign Up</a>
+        <a href="/login" class="login">Login</a>
+        <div class="theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon"></i></div>
+      </div>
     </nav>
   </header>  <div class="slider">
     <div class="slides">
@@ -164,53 +183,52 @@
       &copy; 2025 Sarjana. Powered by <a href="https://opensite.web.id" target="_blank">opensite.web.id</a>
     </div>
   </footer>  <script>
-    // Hamburger menu toggle
-    function toggleMenu() {
-      document.getElementById('main-menu').classList.toggle('show');
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const current = html.getAttribute('data-theme');
+      const next = current === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      document.querySelector('.theme-toggle i').classList.toggle('fa-sun');
+      document.querySelector('.theme-toggle i').classList.toggle('fa-moon');
     }
-    // Slider otomatis
+    // Load saved theme
+    (function() {
+      const saved = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', saved);
+      if (saved === 'dark') document.querySelector('.theme-toggle i').classList.replace('fa-moon', 'fa-sun');
+    })();
+    // Hamburger menu
+    document.querySelector('.burger').addEventListener('click', () => {
+      document.querySelector('nav').classList.toggle('show');
+    });
+    // Slider
     let idx = 0;
     setInterval(() => {
       idx = (idx + 1) % 3;
-      document.querySelector('.slides').style.transform = `translateX(-${idx * 100}%)`;
+      document.querySelector('.slides').style.transform = `translateX(-${idx*100}%)`;
     }, 3000);
-    // Spreadsheet connection
+    // Fetch articles
     const sheetId = '1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww';
     const tabName = 'Live Website';
-    const url = `https://opensheet.elk.sh/${sheetId}/${tabName}`;
-    let articles = [];
-    fetch(url)
+    fetch(`https://opensheet.elk.sh/${sheetId}/${tabName}`)
       .then(r => r.json())
       .then(data => {
-        articles = data;
+        window.articles = data;
         renderContent();
         renderWidgets();
       });
     function renderContent() {
-      const container = document.getElementById('berita');
-      container.innerHTML = '';
-      articles.forEach(a => {
-        container.innerHTML += `
-          <div class="card">
-            <img src="${a.Gambar}" alt="${a.Judul}">
-            <div class="info">
-              <h3><a href="/${a.Slug}">${a.Judul}</a></h3>
-              <p>${a.Tanggal}</p>
-            </div>
-          </div>
-        `;
-      });
+      const cont = document.getElementById('berita'); cont.innerHTML='';
+      articles.forEach(a => cont.innerHTML +=
+        `<div class="card"><img src="${a.Gambar}" alt="${a.Judul}"><div class="info"><h3><a href="/${a.Slug}">${a.Judul}</a></h3><p>${a.Tanggal}</p></div></div>`
+      );
     }
     function renderWidgets() {
-      const pop = document.getElementById('popular');
-      const tri = document.getElementById('trending');
-      pop.innerHTML = tri.innerHTML = '';
-      [...articles].sort((a,b) => b.View - a.View).slice(0,5).forEach(a => {
-        pop.innerHTML += `<li><a href="/${a.Slug}">${a.Judul}</a></li>`;
-      });
-      articles.slice(0,5).forEach(a => {
-        tri.innerHTML += `<li><a href="/${a.Slug}">${a.Judul}</a></li>`;
-      });
+      const pop = document.getElementById('popular'), tri = document.getElementById('trending'); pop.innerHTML=tri.innerHTML='';
+      articles.slice(0,5).forEach(a => tri.innerHTML += `<li><a href="/${a.Slug}">${a.Judul}</a></li>`);
+      [...articles].sort((a,b)=>b.View-a.View).slice(0,5).forEach(a=>pop.innerHTML += `<li><a href="/${a.Slug}">${a.Judul}</a></li>`);
     }
   </script></body>
 </html>
