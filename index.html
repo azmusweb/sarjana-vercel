@@ -1,1 +1,141 @@
+// Next.js application scaffold for Tetora-like site
+
+// pages/_app.js
+import '../styles/globals.css';
+export default function App({ Component, pageProps }) {
+  return <Component {...pageProps} />;
+}
+
+// pages/index.js
+import Head from 'next/head';
+import Slider from '../components/Slider';
+import ArticleList from '../components/ArticleList';
+import Sidebar from '../components/Sidebar';
+import { fetchArticles } from '../lib/sheets';
+
+export default function Home({ articles }) {
+  return (
+    <>
+      <Head>
+        <title>Tetora News Clone</title>
+        <meta name="description" content="News site powered by Google Sheets" />
+      </Head>
+      <Slider items={articles.slice(0,5)} />
+      <div className="container">
+        <ArticleList articles={articles} />
+        <Sidebar articles={articles} />
+      </div>
+    </>
+  );
+}
+
+export async function getStaticProps() {
+  const articles = await fetchArticles();
+  return { props: { articles } };
+}
+
+// pages/[slug].js
+import Head from 'next/head';
+import { fetchArticles } from '../lib/sheets';
+export default function Article({ article }) {
+  return (
+    <>
+      <Head><title>{article.Judul}</title></Head>
+      <article>
+        <h1>{article.Judul}</h1>
+        <p>{article.Tanggal} | {article.Label}</p>
+        <img src={article.Gambar} alt={article.Judul} />
+        <div dangerouslySetInnerHTML={{ __html: article.Isi }} />
+      </article>
+    </>
+  );
+}
+
+export async function getStaticPaths() {
+  const articles = await fetchArticles();
+  const paths = articles.map(a => ({ params: { slug: a.Slug } }));
+  return { paths, fallback: false };
+}
+
+export async function getStaticProps({ params }) {
+  const articles = await fetchArticles();
+  const article = articles.find(a => a.Slug === params.slug);
+  return { props: { article } };
+}
+
+// lib/sheets.js
+import fetch from 'node-fetch';
+export async function fetchArticles() {
+  const res = await fetch('https://opensheet.vercel.app/1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww/berita');
+  return await res.json();
+}
+
+// components/Slider.js
+import React from 'react';
+export default function Slider({ items }) {
+  // Simple CSS carousel
+  return (
+    <div className="slider">
+      {items.map((it, i) => (
+        <div key={i} className="slide">
+          <img src={it.Gambar} alt={it.Judul} />
+          <div className="caption">{it.Judul}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// components/ArticleList.js
+import React from 'react';
+import Link from 'next/link';
+export default function ArticleList({ articles }) {
+  return (
+    <main>
+      {articles.map(a => (
+        <article key={a.Slug}>
+          <Link href={`/${a.Slug}`}><a><h2>{a.Judul}</h2></a></Link>
+          <p>{a.Tanggal} | {a.Label}</p>
+          <p>{a.Isi.substr(0, 120)}...</p>
+        </article>
+      ))}
+    </main>
+  );
+}
+
+// components/Sidebar.js
+import React from 'react';
+export default function Sidebar({ articles }) {
+  const latest = articles.slice(0, 5);
+  const popular = [...articles].sort((a,b)=>b.View - a.View).slice(0,5);
+  return (
+    <aside>
+      <section><h3>Terbaru</h3><ul>{latest.map(a=> <li key={a.Slug}>{a.Judul}</li>)}</ul></section>
+      <section><h3>Populer</h3><ul>{popular.map(a=> <li key={a.Slug}>{a.Judul}</li>)}</ul></section>
+    </aside>
+  );
+}
+
+// styles/globals.css
+body { margin:0; font-family: 'Roboto', sans-serif; }
+header, footer { background: #1a1a1a; color: white; text-align: center; padding: 1rem; }
+.container { display: flex; max-width: 1200px; margin: auto; gap: 1rem; padding: 1rem; }
+.slider { display: flex; overflow-x: auto; }
+.slide { min-width: 300px; margin-right: 1rem; position: relative; }
+.slide img { width: 100%; height: auto; }
+.caption { position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.5); color: white; padding: 0.5rem; }
+article { background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+aside { width: 250px; }
+
+// README.md
+# Tetora Lite Clone
+
+This is a Next.js project replicating Tetora blogger template with dynamic data from Google Sheets.
+
+## Setup
+
+1. `npm install`
+2. `npm run dev`
+
+Deploy to Vercel for live site.
 
