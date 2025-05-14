@@ -1,6 +1,6 @@
 window.onload = () => {
   const sheetId = '1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww';
-  const apiKey = 'YOUR_API_KEY_HERE'; // Ganti dengan API Key Anda dari Google Cloud Console
+  const apiKey = 'AIzaSyDKOClQy1z23Hwjr9HyHmzJbuaPE9Ccbv4'; // Ganti dengan API Key Anda dari Google Cloud Console
   fetchConfig(sheetId, apiKey);
 };
 
