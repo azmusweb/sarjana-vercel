@@ -7,46 +7,47 @@
   <title>Sarjana - Berita Terkini</title>
   <link rel="icon" href="logo.png" type="image/png">
   <style>
+    /* Reset dan basic */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: Arial, sans-serif; background: #f9f9f9; color: #111; }
     header, footer { background: #004488; color: white; padding: 1rem; }
-    nav { background: #0055aa; display: flex; flex-wrap: wrap; padding: 0.5rem 1rem; align-items: center; }
+    nav { background: #0055aa; display: flex; flex-wrap: wrap; padding: 0.5rem 1rem; }
     nav a { color: white; text-decoration: none; margin-right: 1rem; padding: 0.3rem 0.5rem; position: relative; }
     nav a:hover { background: #003366; border-radius: 4px; }
+    nav a.has-sub::after {
+      content: " ▼"; font-size: 0.7em;
+    }
+    .submenu { display: none; position: absolute; top: 100%; left: 0; background: #0055aa; padding: 0.5rem; z-index: 10; }
+    nav a:hover .submenu { display: block; }
+    .submenu a { display: block; margin: 0; padding: 0.3rem; }
 
-    nav .has-sub::after { content: " ▼"; font-size: 0.7em; }
-    .submenu { display: none; position: absolute; top: 100%; left: 0; background: #0055aa; z-index: 10; min-width: 150px; }
-    .submenu a { display: block; padding: 0.3rem 0.5rem; }
-    nav .has-sub:hover .submenu { display: block; }
+    .hero-slider { display: flex; overflow-x: auto; gap: 1rem; padding: 1rem; background: #e9f1fb; }
+    .hero-slider div { min-width: 300px; background: white; padding: 1rem; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
 
-    .hero-slider { display: flex; overflow-x: auto; gap: 1rem; padding: 1rem; background: #e9f1fb; scroll-snap-type: x mandatory; }
-    .hero-slider div { min-width: 300px; background: white; padding: 1rem; box-shadow: 0 0 5px rgba(0,0,0,0.1); scroll-snap-align: start; }
+    main { padding: 1rem; }
+    .artikel { margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #ddd; }
+    .artikel img { max-width: 100%; }
 
-    main { padding: 1rem; display: flex; flex-direction: column; gap: 1rem; }
-    .artikel { border-bottom: 1px solid #ddd; padding-bottom: 1rem; margin-bottom: 1rem; }
-    .artikel img { max-width: 100%; height: auto; }
-
-    .sidebar { background: #eef; padding: 1rem; }
+    .sidebar { background: #eef; padding: 1rem; margin-top: 1rem; }
     .footer-section { display: flex; flex-wrap: wrap; gap: 2rem; margin-top: 2rem; }
     .footer-column { flex: 1; }
 
-    .toggle-mode { position: fixed; top: 1rem; right: 1rem; cursor: pointer; z-index: 1000; }
-
-    .ads { background: #ccc; text-align: center; padding: 1rem; }
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      nav { flex-direction: column; align-items: flex-start; }
-      .menu-toggle { display: block; cursor: pointer; color: white; padding: 0.5rem; }
-      .menu-items { display: none; flex-direction: column; width: 100%; }
-      .menu-items.show { display: flex; }
-      nav a { margin: 0.2rem 0; }
-    }
-
+    /* Mode gelap */
     body.dark { background: #121212; color: #eee; }
     body.dark header, body.dark footer, body.dark nav, body.dark .submenu { background: #222; }
     body.dark nav a { color: #eee; }
     body.dark .hero-slider div { background: #333; color: white; }
+
+    .toggle-mode { position: fixed; top: 1rem; right: 1rem; cursor: pointer; }
+
+    /* Iklan */
+    .ads { background: #ccc; text-align: center; padding: 1rem; margin: 1rem 0; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav { flex-direction: column; }
+      .toggle-mode { position: static; text-align: right; padding: 1rem; }
+    }
   </style>
 </head>
 <body>
@@ -56,33 +57,117 @@
   <div class="toggle-mode">🌓 Mode</div>
 </header>
 
-<nav>
-  <div class="menu-toggle" onclick="document.querySelector('.menu-items').classList.toggle('show')">☰ Menu</div>
-  <div class="menu-items">
-    <a href="/">Beranda</a>
-    <a href="#" class="has-sub">Politik
-      <div class="submenu">
-        <a href="/politik-nasional">Nasional</a>
-        <a href="/politik-internasional">Internasional</a>
-      </div>
-    </a>
-    <a href="/ekonomi">Ekonomi</a>
-    <a href="/teknologi">Teknologi</a>
-    <a href="/signup">Sign Up</a>
-    <a href="/login">Login</a>
-  </div>
+<nav id="main-menu">
+  <a href="/">Beranda</a>
+  <a href="#" class="has-sub">Politik
+    <div class="submenu">
+      <a href="/politik-nasional">Nasional</a>
+      <a href="/politik-internasional">Internasional</a>
+    </div>
+  </a>
+  <a href="/ekonomi">Ekonomi</a>
+  <a href="/teknologi">Teknologi</a>
+  <a href="/signup">Sign Up</a>
+  <a href="/login">Login</a>
 </nav>
 
 <div class="hero-slider" id="slider">
   <div>
-    <img src="https://via.placeholder.com/300x150" alt="Berita Slider 1" loading="lazy">
+    <img src="https://via.placeholder.com/300x150" alt="Slider">
     <h3>Judul Berita Slider 1</h3>
   </div>
   <div>
-    <img src="https://via.placeholder.com/300x150" alt="Berita Slider 2" loading="lazy">
+    <img src="https://via.placeholder.com/300x150" alt="Slider">
     <h3>Judul Berita Slider 2</h3>
   </div>
 </div>
 
 <main>
-  <div
+  <div class="ads">Slot Iklan Adsense</div>
+  <div id="konten"></div>
+  <aside class="sidebar">
+    <h3>Populer</h3>
+    <ul id="populer"></ul>
+  </aside>
+</main>
+
+<footer>
+  <div class="footer-section">
+    <div class="footer-column">
+      <img src="logo.png" alt="Logo" style="height:50px"><br/>Sarjana - Media Digital Cerdas
+    </div>
+    <div class="footer-column">
+      <strong>Menu</strong><br/>
+      <a href="/">Beranda</a><br/>
+      <a href="/ekonomi">Ekonomi</a><br/>
+      <a href="/politik">Politik</a><br/>
+    </div>
+    <div class="footer-column">
+      <strong>Ikuti Kami</strong><br/>
+      <a href="#">Facebook</a><br/>
+      <a href="#">Twitter</a><br/>
+      <a href="#">Instagram</a><br/>
+    </div>
+  </div>
+  <p style="margin-top:1rem;">Powered by <a href="https://opensite.web.id" style="color:white;">OpenSite</a></p>
+</footer>
+
+<script>
+const spreadsheetID = "1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww";
+const sheetName = "Live Website";
+const sheetURL = https://docs.google.com/spreadsheets/d/${spreadsheetID}/gviz/tq?tqx=out:json&sheet=${sheetName};
+
+fetch(sheetURL)
+  .then(res => res.text())
+  .then(data => {
+    const json = JSON.parse(data.substr(47).slice(0, -2));
+    const rows = json.table.rows;
+    const berita = rows.map(r => ({
+      judul: r.c[0]?.v,
+      label: r.c[1]?.v,
+      gambar: r.c[2]?.v,
+      isi: r.c[3]?.v,
+      slug: r.c[4]?.v,
+      meta: r.c[5]?.v,
+      view: r.c[6]?.v,
+      tanggal: r.c[7]?.v,
+      type: r.c[8]?.v
+    }));
+    
+    const path = window.location.pathname.slice(1);
+    const konten = document.getElementById("konten");
+    const populer = document.getElementById("populer");
+
+    if (!path || path === "") {
+      konten.innerHTML = berita.slice(0, 5).map(b => 
+        <div class="artikel">
+          <h2><a href="/${b.slug}">${b.judul}</a></h2>
+          <img src="${b.gambar}" />
+          <p>${b.isi.slice(0, 150)}...</p>
+        </div>).join("");
+    } else {
+      const b = berita.find(x => x.slug === path);
+      if (b) {
+        konten.innerHTML = 
+          <div class="artikel">
+            <h1>${b.judul}</h1>
+            <img src="${b.gambar}" />
+            <p>${b.isi}</p>
+            <small>Dipublikasikan: ${b.tanggal}</small>
+          </div>;
+      } else {
+        konten.innerHTML = "<h2>Berita tidak ditemukan</h2>";
+      }
+    }
+
+    populer.innerHTML = berita.slice(0, 5).map(b => <li><a href="/${b.slug}">${b.judul}</a></li>).join("");
+  });
+
+// Mode gelap
+document.querySelector(".toggle-mode").addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+});
+</script>
+
+</body>
+</html>
