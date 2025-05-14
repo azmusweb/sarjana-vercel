@@ -1,0 +1,21 @@
+:root {
+  --primary-color: #008000;
+  --font-base: 16px;
+}
+* {
+  margin: 0; padding: 0; box-sizing: border-box;
+}
+body {
+  font-size: var(--font-base);
+  font-family: sans-serif;
+  color: #333;
+}
+header {
+  display: flex; align-items: center; padding: 1rem;
+  background: var(--primary-color);
+}
+header img { height: 40px; }
+nav#main-menu ul { list-style: none; display: flex; gap: 1rem; }
+
+#articles { display: grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap: 1rem; padding: 1rem; }
+#articles article { border: 1px solid #ccc; padding: 0.5rem; border-radius: 8px; }
