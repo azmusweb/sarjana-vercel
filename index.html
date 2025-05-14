@@ -2,8 +2,9 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Buka Kabar</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Website berita terbaru dan terpercaya.">
+  <title id="site-title">Buka Kabar</title>
   <style>
     :root {
       --warna-primer: #007bff;
@@ -56,14 +57,34 @@
       padding: 1em;
       margin-top: 2em;
     }
+    @media (max-width: 768px) {
+      header {
+        padding: 0.5em;
+      }
+      nav {
+        flex-direction: column;
+      }
+      footer {
+        padding: 0.5em;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <header id="site-header">Buka Kabar</header>
+  <header id="site-header">
+    <img id="site-logo" src="" alt="Logo" width="150">
+    <h1 id="site-title">Buka Kabar</h1>
+  </header>
+
   <nav id="main-menu"></nav>
+
   <main id="content"></main>
-  <footer>&copy; <span id="tahun"></span> - Buka Kabar</footer>
+
+  <footer>
+    <div>&copy; <span id="tahun"></span> - <span id="footer-text">Buka Kabar</span></div>
+    <div id="footer-socials"></div>
+  </footer>
 
   <script>
     const spreadsheetID = '1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww';
@@ -93,8 +114,15 @@
       const configObj = {};
       config.forEach(row => configObj[row.FUNGSI] = row.WEBSITE);
 
-      document.getElementById('site-header').textContent = configObj['JUDUL'] || 'Buka Kabar';
+      // Set judul website
+      document.getElementById('site-title').textContent = configObj['JUDUL'] || 'Buka Kabar';
       document.documentElement.style.setProperty('--warna-primer', configObj['WARNA'] || '#007bff');
+
+      // Logo Website
+      const logo = configObj['LOGO'] || ''; // Tambahkan kolom LOGO di Config jika diperlukan
+      if (logo) {
+        document.getElementById('site-logo').src = logo;
+      }
 
       // Buat Menu
       const menuItems = configObj['MENU']?.split(',') || ['Home', 'Berita', 'Tekno'];
@@ -106,10 +134,10 @@
         menuContainer.appendChild(link);
       });
 
-      // Tampilkan berita
+      // Tampilkan berita hanya yang status "ON"
       const content = document.getElementById('content');
       berita.forEach(item => {
-        if (item['View']?.toLowerCase() === 'publish') {
+        if (item.View?.toLowerCase() === 'on') {
           const article = document.createElement('article');
           article.innerHTML = `
             <h2>${item.Judul}</h2>
@@ -121,7 +149,17 @@
         }
       });
 
+      // Footer Settings
       document.getElementById('tahun').textContent = new Date().getFullYear();
+      document.getElementById('footer-text').textContent = configObj['FOOTER'] || 'Buka Kabar';
+      const footerSocials = configObj['SOCIALS']?.split(',') || [];
+      const footerSocialsContainer = document.getElementById('footer-socials');
+      footerSocials.forEach(social => {
+        const link = document.createElement('a');
+        link.href = social.trim();
+        link.textContent = social.trim();
+        footerSocialsContainer.appendChild(link);
+      });
     }
 
     initWebsite();
