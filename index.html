@@ -1,5 +1,3 @@
-
-
       <!doctype html>
   <html lang="id">
       <head>
@@ -51,7 +49,63 @@
         }
         </style>
       <body class="index home">
-    
+    <script>
+  const sheetId = '1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww'; // Ganti jika beda
+  const configSheet = 'Config';
+  const beritaSheet = 'Live Website';
+
+  const fetchSheetData = async (sheetName) => {
+    const url = `https://opensheet.elk.sh/${sheetId}/${sheetName}`;
+    const response = await fetch(url);
+    return await response.json();
+  };
+
+  const loadConfig = async () => {
+    const config = await fetchSheetData(configSheet);
+
+    // Contoh: terapkan warna tema dan judul situs dari CONFIG
+    config.forEach(row => {
+      if (row.FUNGSI === 'warna') {
+        document.documentElement.style.setProperty('--theme-color', row.WEBSITE);
+      }
+      if (row.FUNGSI === 'judul') {
+        document.title = row.WEBSITE;
+      }
+      if (row.FUNGSI === 'logo') {
+        const logo = document.getElementById('logo');
+        if (logo) logo.src = row.WEBSITE;
+      }
+    });
+  };
+
+  const loadBerita = async () => {
+    const beritaList = await fetchSheetData(beritaSheet);
+    const container = document.getElementById('berita-container');
+
+    if (!container) return;
+
+    beritaList.forEach(berita => {
+      if (berita['Status View'] !== 'tampil') return;
+
+      const item = document.createElement('div');
+      item.className = 'berita-item';
+      item.innerHTML = `
+        <img src="${berita.Gambar}" alt="${berita.Judul}" />
+        <h3>${berita.Judul}</h3>
+        <p>${berita.Body?.substring(0, 100)}...</p>
+        <a href="berita.html?slug=${berita.Slug}">Selengkapnya</a>
+      `;
+      container.appendChild(item);
+    });
+  };
+
+  window.addEventListener('DOMContentLoaded', () => {
+    loadConfig();
+    loadBerita();
+  });
+</script>
+<div id="berita-container" class="berita-list"></div>
+
        <div class="tickerContainer">
        <div class="container">
            <div class="ticker section" id="ticker" name="Breaking News">
@@ -106,6 +160,8 @@
       <!-- Header Wrapper -->
   
   <header class="hdWrp">
+        <img id="logo" src="" alt="Logo" style="height: 50px;" />
+<h1 id="site-title"></h1>
       <div id="hdC">
       <div class="hdCBks">
       <div class="header header-logo section" id="header" name="Header"><div class="widget Header" data-version="2" id="Header1">
