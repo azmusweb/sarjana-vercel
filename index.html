@@ -6,12 +6,12 @@
   <title>Berita</title>
   <style>
     :root {
-      --theme-color: #006400; /* default warna hijau */
+      --theme-color: #006400;
     }
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
+      background-color: #f9f9f9;
       color: #333;
     }
     header {
@@ -24,10 +24,6 @@
     }
     header img {
       height: 40px;
-    }
-    h1 {
-      margin: 0;
-      font-size: 1.5em;
     }
     .container {
       max-width: 800px;
@@ -42,13 +38,17 @@
       border-radius: 8px;
       margin-bottom: 20px;
     }
+    h1 {
+      font-size: 1.8em;
+      color: var(--theme-color);
+    }
+    p {
+      line-height: 1.6;
+    }
     .meta {
       font-size: 0.9em;
       color: gray;
       margin-bottom: 20px;
-    }
-    .content {
-      line-height: 1.6;
     }
   </style>
 </head>
@@ -60,14 +60,14 @@
   </header>
 
   <main class="container">
-    <h2 id="judul">Memuat...</h2>
+    <h1 id="judul">Memuat...</h1>
     <div class="meta" id="meta-info"></div>
     <img id="gambar" src="" alt="Gambar Berita">
-    <div id="konten" class="content"></div>
+    <div id="konten"></div>
   </main>
 
   <script>
-    const sheetId = '1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww'; // Ganti jika spreadsheet kamu berbeda
+    const sheetId = '1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww'; // Ganti jika beda
     const configSheet = 'Config';
     const beritaSheet = 'Live Website';
 
