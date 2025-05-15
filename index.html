@@ -3,16 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Website berita dinamis sarjana.web.id">
-  <title>Sarjana</title>
+  <title>Berita</title>
   <style>
     :root {
-      --theme-color: #006400; /* default warna hijau */
+      --theme-color: #006400;
     }
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #f5f5f5;
+      background-color: #f9f9f9;
       color: #333;
     }
     header {
@@ -26,44 +25,30 @@
     header img {
       height: 40px;
     }
-    h1 {
-      margin: 0;
-      font-size: 1.5em;
-    }
-    .berita-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 16px;
-      padding: 20px;
-    }
-    .berita-item {
+    .container {
+      max-width: 800px;
+      margin: 30px auto;
       background: white;
+      padding: 20px;
       border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      display: flex;
-      flex-direction: column;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-    .berita-item img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
+    .container img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-bottom: 20px;
     }
-    .berita-item h3 {
-      margin: 10px;
-      font-size: 1.2em;
+    h1 {
+      font-size: 1.8em;
       color: var(--theme-color);
     }
-    .berita-item p {
-      margin: 0 10px 10px;
+    p {
+      line-height: 1.6;
+    }
+    .meta {
       font-size: 0.9em;
-    }
-    .berita-item a {
-      margin: 10px;
-      color: var(--theme-color);
-      text-decoration: none;
-      font-weight: bold;
-      align-self: flex-start;
+      color: gray;
+      margin-bottom: 20px;
     }
   </style>
 </head>
@@ -74,14 +59,22 @@
     <h1 id="site-title">Sarjana</h1>
   </header>
 
-  <main>
-    <div id="berita-container" class="berita-list"></div>
+  <main class="container">
+    <h1 id="judul">Memuat...</h1>
+    <div class="meta" id="meta-info"></div>
+    <img id="gambar" src="" alt="Gambar Berita">
+    <div id="konten"></div>
   </main>
 
   <script>
-    const sheetId = '1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww'; // Ganti jika spreadsheet kamu beda
+    const sheetId = '1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww'; // Ganti jika beda
     const configSheet = 'Config';
     const beritaSheet = 'Live Website';
+
+    const getSlug = () => {
+      const params = new URLSearchParams(window.location.search);
+      return params.get('slug');
+    };
 
     const fetchSheetData = async (sheetName) => {
       const url = `https://opensheet.elk.sh/${sheetId}/${sheetName}`;
@@ -112,23 +105,23 @@
     };
 
     const loadBerita = async () => {
+      const slug = getSlug();
       const beritaList = await fetchSheetData(beritaSheet);
-      const container = document.getElementById('berita-container');
-      if (!container) return;
+      const artikel = beritaList.find(item => item.Slug === slug && item['Status View']?.toLowerCase() === 'tampil');
 
-      beritaList.forEach(berita => {
-        if (berita['Status View']?.toLowerCase() !== 'tampil') return;
+      if (!artikel) {
+        document.getElementById('judul').textContent = 'Berita tidak ditemukan';
+        document.getElementById('meta-info').textContent = '';
+        document.getElementById('gambar').style.display = 'none';
+        document.getElementById('konten').innerHTML = '<p>Maaf, berita dengan slug tersebut tidak tersedia.</p>';
+        return;
+      }
 
-        const item = document.createElement('div');
-        item.className = 'berita-item';
-        item.innerHTML = `
-          <img src="${berita.Gambar}" alt="${berita.Judul}" />
-          <h3>${berita.Judul}</h3>
-          <p>${berita.Body?.substring(0, 100)}...</p>
-          <a href="berita.html?slug=${berita.Slug}">Selengkapnya</a>
-        `;
-        container.appendChild(item);
-      });
+      document.title = artikel.Judul;
+      document.getElementById('judul').textContent = artikel.Judul;
+      document.getElementById('meta-info').textContent = `Dipublikasikan: ${artikel['Tgl/Jam']} | Label: ${artikel.Label}`;
+      document.getElementById('gambar').src = artikel.Gambar;
+      document.getElementById('konten').innerHTML = `<p>${artikel.Body.replace(/\n/g, '<br>')}</p>`;
     };
 
     window.addEventListener('DOMContentLoaded', () => {
