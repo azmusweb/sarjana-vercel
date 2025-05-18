@@ -3,139 +3,107 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sarjana</title>
+  <title>Sarjana - Website Berita</title>
   <style>
-    :root {
-      --main-color: #2c7a7b;
-    }
     body {
       font-family: sans-serif;
       margin: 0;
       padding: 0;
-      background: #f8f9fa;
     }
     header {
-      background-color: var(--main-color);
-      color: #fff;
+      background: #004d40;
+      color: white;
       padding: 1rem;
       text-align: center;
     }
-    #logo {
-      max-height: 40px;
-    }
-    main {
+    #berita-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
       padding: 1rem;
     }
     .berita-item {
-      background: #fff;
-      padding: 1rem;
-      margin-bottom: 1rem;
+      border: 1px solid #ccc;
       border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      overflow: hidden;
     }
     .berita-item img {
-      max-width: 100%;
-      border-radius: 4px;
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
     }
-    .berita-item h2 {
-      margin-top: 0.5rem;
+    .berita-item .konten {
+      padding: 1rem;
+    }
+    .berita-item h3 {
+      margin: 0 0 0.5rem;
     }
     .berita-item p {
-      color: #555;
-    }
-    .berita-item small {
-      color: #999;
+      margin: 0.5rem 0;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <img id="logo" src="https://via.placeholder.com/150x40?text=Sarjana" alt="Logo"/>
-    <h1 id="judul-website">Selamat Datang di Sarjana</h1>
-  </header>
+<header>
+  <h1>Sarjana.web.id</h1>
+  <p>Berita Dinamis dari Google Spreadsheet</p>
+</header>
 
-  <main>
-    <div id="berita-container">
-      <p>Memuat berita...</p>
-    </div>
-  </main>
+<main>
+  <div id="berita-container">
+    <!-- Data berita akan dimuat di sini -->
+  </div>
+</main>
 
-  <script>
-    const spreadsheetId = '1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww';
-    const apiKey = 'AIzaSyDKOClQy1z23Hwjr9HyHmzJbuaPE9Ccbv4';
-    const sheetName = 'Live Website';
-    const configSheet = 'Config';
+<script>
+  const apiKey = "AIzaSyDKOClQy1z23Hwjr9HyHmzJbuaPE9Ccbv4";
+  const sheetId = "1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww";
+  const sheetName = "Live Website";
 
-    async function fetchSheet(sheet) {
-      const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheet}?key=${apiKey}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      return data.values;
-    }
+  async function loadBerita() {
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}?key=${apiKey}`;
+    
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      const rows = data.values;
 
-    function renderNews(data) {
-      const container = document.querySelector('#berita-container');
-      container.innerHTML = '';
+      if (!rows || rows.length < 2) {
+        document.getElementById('berita-container').innerHTML = "<p>Tidak ada data ditemukan.</p>";
+        return;
+      }
 
-      for (let i = 1; i < data.length; i++) {
-        const [judul, label, gambar, isi, slug, metaDeskripsi, view, tanggal, type] = data[i];
+      const beritaHTML = rows.slice(1).map(row => {
+        const judul = row[0] || '';
+        const label = row[1] || '';
+        const gambar = row[2] || '';
+        const isi = row[3] || '';
+        const slug = row[4] || '';
+        const tanggal = row[7] || '';
 
-        const beritaHTML = `
-          <article class="berita-item">
-            <img src="${gambar}" alt="${judul}" loading="lazy">
-            <h2><a href="berita.html?slug=${slug}">${judul}</a></h2>
-            <p>${isi?.substring(0, 120) || ''}...</p>
-            <small>${label} • ${tanggal}</small>
-          </article>
+        return `
+          <div class="berita-item">
+            <img src="${gambar}" alt="${judul}">
+            <div class="konten">
+              <span style="font-size: 0.8rem; color: gray;">${label} • ${tanggal}</span>
+              <h3>${judul}</h3>
+              <p>${isi.substring(0, 100)}...</p>
+              <a href="berita.html?slug=${encodeURIComponent(slug)}">Baca Selengkapnya</a>
+            </div>
+          </div>
         `;
+      }).join('');
 
-        container.innerHTML += beritaHTML;
-      }
+      document.getElementById('berita-container').innerHTML = beritaHTML;
+    } catch (error) {
+      console.error("Gagal memuat data:", error);
+      document.getElementById('berita-container').innerHTML = "<p>Gagal memuat data dari spreadsheet.</p>";
     }
+  }
 
-    function renderConfig(configData) {
-      const configMap = {};
-      for (let i = 1; i < configData.length; i++) {
-        const [fungsi, website] = configData[i];
-        configMap[fungsi.toLowerCase()] = website;
-      }
-
-      // Ganti logo
-      const logoImg = document.querySelector('#logo');
-      if (configMap['logo'] && logoImg) {
-        logoImg.src = configMap['logo'];
-      }
-
-      // Ganti warna
-      if (configMap['warna']) {
-        document.documentElement.style.setProperty('--main-color', configMap['warna']);
-      }
-
-      // Ganti title dan heading
-      if (configMap['title']) {
-        document.title = configMap['title'];
-        const h1 = document.getElementById('judul-website');
-        if (h1) h1.textContent = configMap['title'];
-      }
-    }
-
-    async function initWebsite() {
-      try {
-        const [newsData, configData] = await Promise.all([
-          fetchSheet(sheetName),
-          fetchSheet(configSheet),
-        ]);
-        renderNews(newsData);
-        renderConfig(configData);
-      } catch (e) {
-        console.error('Gagal memuat data:', e);
-        document.querySelector('#berita-container').innerHTML = '<p>Gagal memuat berita.</p>';
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', initWebsite);
-  </script>
+  loadBerita();
+</script>
 
 </body>
 </html>
