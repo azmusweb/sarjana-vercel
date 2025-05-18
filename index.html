@@ -2,166 +2,174 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Memuat...</title>
-  <meta name="description" content=""/>
-  <link rel="stylesheet" href="style.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title id="site-title">Sarjana</title>
+  <meta name="description" content="" id="meta-description" />
+  <link rel="icon" href="" id="favicon" />
+  <link rel="stylesheet" href="style.css" />
   <style>
-    body { font-family: sans-serif; margin: 0; }
-    header, nav, footer { background: #004d40; color: white; padding: 10px; }
-    nav ul { display: flex; flex-wrap: wrap; gap: 10px; list-style: none; padding: 0; margin: 0; }
-    nav li { position: relative; }
-    nav li ul { display: none; position: absolute; background: #00695c; padding: 10px; list-style: none; top: 100%; left: 0; }
-    nav li:hover ul { display: block; }
-    .container { display: flex; flex-direction: row; padding: 20px; gap: 20px; }
-    .content { flex: 3; }
-    .sidebar { flex: 1; position: sticky; top: 20px; background: #f1f1f1; padding: 10px; }
-    .post { margin-bottom: 20px; border-bottom: 1px solid #ccc; padding-bottom: 10px; }
-    footer { text-align: center; }
+    /* Tambahkan CSS tambahan di sini jika diperlukan */
+    /* Contoh: Sticky sidebar */
+    .sidebar {
+      position: sticky;
+      top: 0;
+    }
   </style>
 </head>
 <body>
+  <header>
+    <img id="logo" src="" alt="Logo" />
+    <nav id="main-menu">
+      <!-- Menu akan diisi secara dinamis -->
+    </nav>
+  </header>
 
-<header>
-  <h1 id="site-title">Sarjana</h1>
-</header>
+  <main>
+    <aside class="sidebar" id="left-sidebar">
+      <!-- Sidebar kiri akan diisi secara dinamis -->
+    </aside>
 
-<nav>
-  <ul id="menu"></ul>
-</nav>
+    <section id="content">
+      <!-- Konten berita akan diisi secara dinamis -->
+    </section>
 
-<div class="container">
-  <aside class="sidebar" id="left-sidebar">Memuat sidebar kiri...</aside>
-
-  <main class="content" id="news-content">
-    Memuat berita...
+    <aside class="sidebar" id="right-sidebar">
+      <!-- Sidebar kanan akan diisi secara dinamis -->
+    </aside>
   </main>
 
-  <aside class="sidebar" id="right-sidebar">Memuat sidebar kanan...</aside>
-</div>
+  <footer id="footer">
+    <!-- Footer akan diisi secara dinamis -->
+  </footer>
 
-<footer id="footer">
-  Memuat footer...
-</footer>
+  <script>
+    const apiKey = 'AIzaSyDKOClQy1z23Hwjr9HyHmzJbuaPE9Ccbv4';
+    const spreadsheetId = '1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww';
 
-<script>
-const spreadsheetId = '1oMHeKOF2_D6deuV8T1l10_GB0wgsPGLV7WrPcJ6Qxww';
-const apiKey = 'AIzaSyDKOClQy1z23Hwjr9HyHmzJbuaPE9Ccbv4';
-const base = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values`;
+    // Fungsi untuk mengambil data dari Google Sheets
+    async function fetchSheetData(sheetName) {
+      const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${sheetName}?key=${apiKey}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      return data.values;
+    }
 
-async function fetchSheet(range) {
-  const url = `${base}/${range}?alt=json&key=${apiKey}`;
-  const res = await fetch(url);
-  const data = await res.json();
-  return data.values || [];
-}
+    // Fungsi untuk mengonversi judul menjadi slug
+    function generateSlug(text) {
+      return text
+        .toString()
+        .toLowerCase()
+        .replace(/\s+/g, '-')           // Ganti spasi dengan -
+        .replace(/[^\w\-]+/g, '')       // Hapus karakter non-word
+        .replace(/\-\-+/g, '-')         // Ganti multiple - dengan single -
+        .replace(/^-+/, '')             // Hapus - di awal
+        .replace(/-+$/, '');            // Hapus - di akhir
+    }
 
-// Load config
-async function loadConfig() {
-  const rows = await fetchSheet('Config');
-  const config = {};
-  rows.forEach(([fungsi, isi]) => {
-    config[fungsi.trim().toLowerCase()] = isi;
-  });
-  document.title = config['seo-title'] || 'Sarjana';
-  document.querySelector('meta[name=description]').setAttribute('content', config['seo-deskripsi'] || '');
-  document.getElementById('footer').innerHTML = config['footer'] || '';
-  document.getElementById('site-title').textContent = config['judul-website'] || 'Sarjana';
-}
+    // Fungsi untuk memuat konfigurasi dari sheet 'Config'
+    async function loadConfig() {
+      const configData = await fetchSheetData('Config');
+      const headers = configData[0];
+      const values = configData[1];
+      const config = {};
+      headers.forEach((header, index) => {
+        config[header] = values[index];
+      });
 
-// Load menu
-async function loadMenu() {
-  const raw = await fetchSheet('Config');
-  const nav = raw.filter(r => r[0].toLowerCase().startsWith('menu'));
-  const menuContainer = document.getElementById('menu');
-  menuContainer.innerHTML = '';
-  nav.forEach(([_, html]) => {
-    const li = document.createElement('li');
-    li.innerHTML = html;
-    menuContainer.appendChild(li);
-  });
-}
+      // Atur elemen-elemen berdasarkan konfigurasi
+      document.getElementById('site-title').textContent = config['Site Title'] || 'Sarjana';
+      document.getElementById('meta-description').setAttribute('content', config['Meta Description'] || '');
+      document.getElementById('favicon').setAttribute('href', config['Favicon URL'] || '');
+      document.getElementById('logo').setAttribute('src', config['Logo URL'] || '');
 
-// Load sidebars
-async function loadSidebars() {
-  const rows = await fetchSheet('Config');
-  const left = rows.find(r => r[0].toLowerCase() === 'sidebar-kiri');
-  const right = rows.find(r => r[0].toLowerCase() === 'sidebar-kanan');
-  if (left) document.getElementById('left-sidebar').innerHTML = left[1];
-  if (right) document.getElementById('right-sidebar').innerHTML = right[1];
-}
+      // Atur warna tema jika tersedia
+      if (config['Primary Color']) {
+        document.documentElement.style.setProperty('--primary-color', config['Primary Color']);
+      }
 
-// Load news
-async function loadNews() {
-  const rows = await fetchSheet('Live Website');
-  const container = document.getElementById('news-content');
-  const headers = rows[0];
-  const newsRows = rows.slice(1).filter(r => r[headers.indexOf('Status View')]?.toLowerCase() === 'publish');
+      // Atur footer
+      document.getElementById('footer').innerHTML = config['Footer HTML'] || '';
+    }
 
-  container.innerHTML = '';
-  newsRows.forEach(row => {
-    const get = key => row[headers.indexOf(key)] || '';
-    const title = get('Judul');
-    const label = get('Label');
-    const img = get('Gambar');
-    const body = get('Body');
-    const slug = get('Slug + PermaLink');
-    const time = get('Tgl/Jam');
+    // Fungsi untuk memuat menu dari sheet 'Config'
+    async function loadMenu() {
+      const configData = await fetchSheetData('Config');
+      const headers = configData[0];
+      const values = configData[1];
+      const config = {};
+      headers.forEach((header, index) => {
+        config[header] = values[index];
+      });
 
-    const div = document.createElement('div');
-    div.className = 'post';
-    div.innerHTML = `
-      <h2><a href="?berita=${slug}">${title}</a></h2>
-      <small>${time} | <b>${label}</b></small>
-      <img src="${img}" alt="${title}" style="max-width:100%;"/>
-      <p>${body.substring(0, 150)}...</p>
-    `;
-    container.appendChild(div);
-  });
-}
+      const menuContainer = document.getElementById('main-menu');
+      if (config['Menu']) {
+        const menuItems = config['Menu'].split(';');
+        menuItems.forEach(item => {
+          const [name, link] = item.split(',');
+          const menuItem = document.createElement('a');
+          menuItem.href = link.trim();
+          menuItem.textContent = name.trim();
+          menuContainer.appendChild(menuItem);
+        });
+      }
+    }
 
-// Load detail view if slug in URL
-async function loadDetailIfSlug() {
-  const params = new URLSearchParams(window.location.search);
-  const slugParam = params.get('berita');
-  if (!slugParam) return;
+    // Fungsi untuk memuat berita dari sheet 'Live Website'
+    async function loadNews() {
+      const newsData = await fetchSheetData('Live Website');
+      const headers = newsData[0];
+      const newsItems = newsData.slice(1);
 
-  const rows = await fetchSheet('Live Website');
-  const headers = rows[0];
-  const match = rows.find(r => r[headers.indexOf('Slug + PermaLink')] === slugParam);
-  if (!match) return;
+      const contentContainer = document.getElementById('content');
+      newsItems.forEach(item => {
+        const news = {};
+        headers.forEach((header, index) => {
+          news[header] = item[index];
+        });
 
-  const get = key => match[headers.indexOf(key)] || '';
-  const title = get('Judul');
-  const label = get('Label');
-  const img = get('Gambar');
-  const body = get('Body');
-  const time = get('Tgl/Jam');
+        const article = document.createElement('article');
+        const slug = generateSlug(news['Judul']);
 
-  const container = document.getElementById('news-content');
-  container.innerHTML = `
-    <article>
-      <h1>${title}</h1>
-      <small>${time} | <b>${label}</b></small>
-      <img src="${img}" alt="${title}" style="max-width:100%;"/>
-      <div>${body}</div>
-    </article>
-  `;
+        article.innerHTML = `
+          <h2><a href="/${slug}">${news['Judul']}</a></h2>
+          <p><em>${news['Tanggal']}</em></p>
+          <img src="${news['Gambar']}" alt="${news['Judul']}" />
+          <p>${news['Isi'].substring(0, 200)}...</p>
+        `;
 
-  document.title = title;
-}
+        contentContainer.appendChild(article);
+      });
+    }
 
-(async () => {
-  await loadConfig();
-  await loadMenu();
-  await loadSidebars();
-  const hasSlug = new URLSearchParams(window.location.search).has('berita');
-  if (hasSlug) {
-    await loadDetailIfSlug();
-  } else {
-    await loadNews();
-  }
-})();
-</script>
+    // Fungsi untuk memuat sidebar (jika ada)
+    async function loadSidebars() {
+      const configData = await fetchSheetData('Config');
+      const headers = configData[0];
+      const values = configData[1];
+      const config = {};
+      headers.forEach((header, index) => {
+        config[header] = values[index];
+      });
+
+      if (config['Left Sidebar HTML']) {
+        document.getElementById('left-sidebar').innerHTML = config['Left Sidebar HTML'];
+      }
+
+      if (config['Right Sidebar HTML']) {
+        document.getElementById('right-sidebar').innerHTML = config['Right Sidebar HTML'];
+      }
+    }
+
+    // Inisialisasi halaman
+    async function init() {
+      await loadConfig();
+      await loadMenu();
+      await loadSidebars();
+      await loadNews();
+    }
+
+    // Jalankan inisialisasi saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
 </body>
 </html>
